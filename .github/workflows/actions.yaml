@@ -18,12 +18,12 @@ jobs:
         poetry install
     - name: Test formatting
       run: |
-        black --check .
-        isort --check .
-        docformatter --check -r .
+        poetry run black --check .
+        poetry run isort --check .
+        poetry run docformatter --check -r .
     - name: Test with pytest
-      run: pytest .
+      run: poetry run pytest .
     - name: Static code analysis
-      run: mypy .
+      run: poetry run mypy .
     - name: Run pylint
-      run: pylint quantuminspire
+      run: poetry run pylint quantuminspire
