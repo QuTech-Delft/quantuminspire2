@@ -155,7 +155,7 @@ def get_config(key: str) -> None:
 def list_config() -> None:
     """List config.
 
-    Get all set keys. No default values will be returned.
+    Get all key value combinations.
     """
     typer.echo("List config")
 
