@@ -152,7 +152,7 @@ def get_config(key: str) -> None:
 
 
 @configuration_app.command("list")
-def list_config(full: bool) -> None:
+def list_config(full: bool = False) -> None:
     """List config.
 
     Get all key value combinations.
