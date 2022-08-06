@@ -152,12 +152,15 @@ def get_config(key: str) -> None:
 
 
 @configuration_app.command("list")
-def list_config() -> None:
+def list_config(full: bool) -> None:
     """List config.
 
     Get all key value combinations.
     """
-    typer.echo("List config")
+    if full:
+        typer.echo("List config, custom and default")
+    else:
+        typer.echo("List custom config only")
 
 
 @configuration_app.command("set")
