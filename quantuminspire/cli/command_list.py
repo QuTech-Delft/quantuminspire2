@@ -22,16 +22,15 @@ class Destination(str, Enum):
 
 
 @algorithms_app.command("create")
-def create_algorithm(name: str, hybrid: bool = typer.Option(False)) -> None:
+def create_algorithm(
+    name: str = typer.Argument(..., help="The name of the algorithm"),
+    hybrid: bool = typer.Option(False, help="Whether the template should be hybrid or only quantum"),
+) -> None:
     """Create a new algorithm.
 
     Create an algorithm with a name. Depending on the hybrid flag,
     either the "hybrid algorithm" or the "quantum circuit" template is
     used.
-
-    Args:
-        name: The name of the algorithm.
-        hybrid: Whether the template should be hybrid or only quantum.
     """
     if hybrid:
         typer.echo(f"Creating hybrid quantum/classical algorithm '{name}'")
@@ -50,15 +49,12 @@ def commit_algorithm() -> None:
 
 
 @algorithms_app.command("delete")
-def delete_algorithm(remote: bool = typer.Option(False)) -> None:
+def delete_algorithm(remote: bool = typer.Option(False, help="Also delete the remote resource")) -> None:
     """Delete algorithm.
 
     The algorithm is deleted from the local disk. The algorithm is
     selected on the folder, the user is currently in. Based on the
     argument, the remote algorithm can also be deleted.
-
-    Args:
-        remote: Also delete the remote resource.
     """
     if remote:
         typer.echo("Delete local and remote algorithm")
@@ -67,16 +63,13 @@ def delete_algorithm(remote: bool = typer.Option(False)) -> None:
 
 
 @algorithms_app.command("describe")
-def describe_algorithm(remote: bool = typer.Option(False)) -> None:
+def describe_algorithm(remote: bool = typer.Option(False, help="Use the remote resource as source of truth")) -> None:
     """Describe algorithm.
 
     Describe the algorithm. Both metadata and data from the algorithm
-    itself are shown. The algorithm is selected on the folder, the user
+    itself are shown. The algorithm is selected on the folder the user
     is currently in. Based on the argument, the remote algorithm can
     also be described.
-
-    Args:
-        remote: Use the remote resource as source of truth.
     """
     if remote:
         typer.echo("Describe remote algorithm")
@@ -98,7 +91,9 @@ def execute_algorithm() -> None:
 
 @algorithms_app.command("list")
 def list_algorithms(
-    local: bool = typer.Option(False), project: Optional[str] = typer.Option(None), remote: bool = typer.Option(False)
+    local: bool = typer.Option(False, help="List all algorithms on the local system"),
+    project: Optional[str] = typer.Option(None, help="Override the selected (default) project"),
+    remote: bool = typer.Option(False, help="List all algorithms on the remote system"),
 ) -> None:
     """List algorithms.
 
@@ -108,18 +103,15 @@ def list_algorithms(
     both lists are merged with all algorithms being distinct. With the
     project flag, a different project can be selected to list all
     algorithms for.
-
-    Args:
-        local: List all algorithms on the local system.
-        project: Override the selected (default) project.
-        remote: List all algorithms on the remote system.
     """
     if local and remote:
         target = "remote and local"
     elif remote:
         target = "remote"
-    else:
+    elif local:
         target = "local"
+    else:
+        target = "no"
 
     if project is None:
         project = "default"
@@ -133,26 +125,24 @@ def select_algorithm() -> None:
     Select an algorithm for execution. The selected algorithms will be
     added to a `BatchRun` on execution. If the algorithm has already
     been selected before, the algorithm will be unselected on re-calling
-    this method (i.e. the method acts as a toggle).
+    this method (i.e. the method acts as a toggle). The algorithm is
+    selected on the folder the user is currently in.
     """
     typer.echo("Select algorithm")
 
 
 @configuration_app.command("get")
-def get_config(key: str) -> None:
+def get_config(key: str = typer.Argument(..., help="The name of the configuration to get.")) -> None:
     """Get config.
 
     Get the configured value via a key. If no explicit value is set, the
     default value will be returned.
-
-    Args:
-        key: The name of the configuration to get.
     """
     typer.echo(f"Get config for '{key}'")
 
 
 @configuration_app.command("list")
-def list_config(full: bool = False) -> None:
+def list_config(full: bool = typer.Option(False, help="List both custom and default key-values")) -> None:
     """List config.
 
     Get all key value combinations.
@@ -164,42 +154,35 @@ def list_config(full: bool = False) -> None:
 
 
 @configuration_app.command("set")
-def set_config(key: str, value: str) -> None:
+def set_config(
+    key: str = typer.Argument(..., help="The name of the configuration to set"),
+    value: str = typer.Argument(..., help="The value of the configuration to set"),
+) -> None:
     """Set config.
 
     Set a key value combination for the configuration. Both the key and
     value are validated.
-
-    Args:
-        key: The name of the configuration to set.
-        value: The value of the configuration to set.
     """
     typer.echo(f"Set config '{key}={value}'")
 
 
 @projects_app.command("create")
-def create_project(name: str) -> None:
+def create_project(name: str = typer.Argument(..., help="The name of the project")) -> None:
     """Create project.
 
     Create a project based on the name. This project is only created
     locally at first. The sync method will upload the project to the
     remote target.
-
-    Args:
-        name: The name of the project
     """
     typer.echo(f"Create project '{name}'")
 
 
 @projects_app.command("delete")
-def delete_project(remote: bool = typer.Option(False)) -> None:
+def delete_project(remote: bool = typer.Option(False, help="Also delete the remote resource")) -> None:
     """Delete project.
 
     Delete a project from disk. Based on the argument, the remote
     project can also be deleted.
-
-    Args:
-        remote: Also delete the remote resource.
     """
     if remote:
         typer.echo("Delete remote and local project")
@@ -208,15 +191,12 @@ def delete_project(remote: bool = typer.Option(False)) -> None:
 
 
 @projects_app.command("describe")
-def describe_project(remote: bool = typer.Option(False)) -> None:
+def describe_project(remote: bool = typer.Option(False, help="Use the remote resource as source of truth")) -> None:
     """Describe project.
 
     Describe the project. Both metadata and data from the project itself
     are shown. Based on the argument, the remote project can also be
     described.
-
-    Args:
-        remote: Use the remote resource as source of truth.
     """
     if remote:
         typer.echo("Describe remote project")
@@ -225,66 +205,67 @@ def describe_project(remote: bool = typer.Option(False)) -> None:
 
 
 @projects_app.command("list")
-def list_projects(local: bool = typer.Option(False), remote: bool = typer.Option(False)) -> None:
+def list_projects(
+    local: bool = typer.Option(False, help="List all projects on the local system"),
+    remote: bool = typer.Option(False, help="List all projects on the remote system"),
+) -> None:
     """List project.
 
     List all projects known on that environment. If no environment is
     chosen (either local or remote), an empty list is shown. If both
     environments are chosen, both lists are merged with all projects
     being distinct.
-
-    Args:
-        local: List all projects on the local system.
-        remote: List all projects on the remote system.
     """
     if local and remote:
         target = "remote and local"
     elif remote:
         target = "remote"
-    else:
+    elif local:
         target = "local"
+    else:
+        target = "no"
 
     typer.echo(f"List {target} projects")
 
 
 @projects_app.command("sync")
-def sync_projects(dest: Destination = Destination.LOCAL) -> None:
+def sync_projects(
+    dest: Destination = typer.Option(Destination.LOCAL, help="The target system with which to synchronize the projects")
+) -> None:
     """Sync project.
 
     All projects from the original location are synced to the
     `destination`. In the case of existing projects, the metadata of the
     target project is updated.
-
-    Args:
-        dest: The target system with which to synchronize the projects.
     """
     typer.echo(f"Sync projects with {dest}")
 
 
 @app.command("login")
-def login(host: str) -> None:
+def login(
+    host: str = typer.Argument(
+        "https://api.qi2.quantum-inspire.com", help="The URL of the platform to which to connect"
+    )
+) -> None:
     """Log in to Quantum Inspire.
 
-    Log in to the Quantum Inspire platform. The host can be
-    overwritten, so that the user can connect to different instances. If
-    no host is specified, the production environment will be used.
-
-    Args:
-        host: The URL of the platform to which to connect.
+    Log in to the Quantum Inspire platform. The host can be overwritten,
+    so that the user can connect to different instances. If no host is
+    specified, the production environment will be used.
     """
     typer.echo(f"Login to {host}")
 
 
 @app.command("logout")
-def logout(host: str) -> None:
+def logout(
+    host: str = typer.Argument(
+        "https://api.qi2.quantum-inspire.com", help="The URL of the platform from which to log out"
+    )
+) -> None:
     """Log out of Quantum Inspire.
 
-    Log out of a Quantum Inspire platform. This option will delete
-    the local information needed for authentication, for a specific
-    host. If no host is specified, the production environment will be
-    used.
-
-    Args:
-        host: The URL of the platform to which to connect.
+    Log out of a Quantum Inspire platform. This option will delete the
+    local information needed for authentication, for a specific host. If
+    no host is specified, the production environment will be used.
     """
     typer.echo(f"Logout from {host}")
