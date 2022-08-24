@@ -16,11 +16,11 @@ class Circuit:
     program and kernels. These objects can still be used.
     """
 
-    def __init__(self, platform: str, program: str) -> None:
+    def __init__(self, platform_name: str, program_name: str) -> None:
         self._output_dir = Path(__file__).parent.absolute() / "output"
         openql.set_option("output_dir", str(self._output_dir))
-        self._platform = platform
-        self._program_name = program
+        self._platform = platform_name
+        self._program_name = program_name
         self._openql_platform = Platform(platform, "none")
         self._openql_program: Optional[Program] = None
         self._openql_kernels: list[Kernel] = []

@@ -21,12 +21,12 @@ def mock_file(mocker: MockerFixture) -> None:
 
 
 def test_create(openql: MagicMock) -> None:
-    _ = Circuit(platform="platform", program="program")
+    _ = Circuit(platform_name="platform", program_name="program")
     openql.set_option.assert_called_once()
 
 
 def test_create_empty_circuit(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform="platform", program="program") as c:
+    with Circuit(platform_name="platform", program_name="program") as c:
         pass
 
     openql.Program().compile.assert_called_once()
@@ -34,7 +34,7 @@ def test_create_empty_circuit(openql: MagicMock, mock_file: None) -> None:
 
 
 def test_create_circuit_with_kernel(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform="platform", program="program") as c:
+    with Circuit(platform_name="platform", program_name="program") as c:
         k = c.init_kernel("kernel1", 2)
         k.x(0)
 
@@ -43,7 +43,7 @@ def test_create_circuit_with_kernel(openql: MagicMock, mock_file: None) -> None:
 
 
 def test_create_circuit_with_multiple_kernels(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform="platform", program="program") as c:
+    with Circuit(platform_name="platform", program_name="program") as c:
         k = c.init_kernel("kernel1", 2)
         k.x(0)
         _ = c.init_kernel("kernel2", 3)
@@ -53,7 +53,7 @@ def test_create_circuit_with_multiple_kernels(openql: MagicMock, mock_file: None
 
 
 def test_create_circuit_reuse_kernel(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform="platform", program="program") as c:
+    with Circuit(platform_name="platform", program_name="program") as c:
         k = c.init_kernel("kernel1", 2)
         k.x(0)
         c.add_kernel(k)
