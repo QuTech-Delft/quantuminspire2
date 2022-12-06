@@ -18,6 +18,8 @@ jobs:
           poetry install
       - name: Test formatting
         run: poetry run black --check .
+      - name: Test sorting
+        run: poetry run isort --check .
       - name: Test docstring formatting
         run: poetry run docformatter --check --config ./pyproject.toml .
       - name: Test with pytest
