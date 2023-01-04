@@ -1,0 +1,45 @@
+name: Publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+  release:
+    types:
+      - created
+
+jobs:
+  publish:
+    name: Publish Python 🐍 distributions 📦 to TestPyPI
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.7"
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+      - name: Version poetry package - dev
+        if: github.ref == 'refs/heads/dev'
+        run: poetry version "0.1.0a${{ github.run_id }}"
+      - name: Version poetry package - maser
+        if: github.ref == 'refs/heads/master'
+        run: poetry version "0.1.0rc${{ github.run_id }}"
+      - name: Version poetry package - tag
+        if: github.event_name == 'release' && github.event.action == 'created'
+        run: poetry version "${{  github.ref_name }}"
+      - name: Build poetry package
+        run: poetry build
+      # - name: Publish distribution 📦 to Test PyPI
+      #   if: github.event_name == 'pull_request' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master' || (github.event_name == 'release' && github.event.action == 'created')
+      #   uses: pypa/gh-action-pypi-publish@release/v1
+      #   with:
+      #     password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+      #     repository_url: https://test.pypi.org/legacy/
+      # - name: Publish distribution 📦 to PyPI
+      #   if: github.ref == 'refs/tags'
+      #   uses: pypa/gh-action-pypi-publish@release/v1
+      #   with:
+      #     password: ${{ secrets.PYPI_API_TOKEN }}
