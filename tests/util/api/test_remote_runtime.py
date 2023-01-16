@@ -1,5 +1,10 @@
 from typing import Any, Generator
-from unittest.mock import AsyncMock, MagicMock, call
+from unittest.mock import MagicMock, call
+
+try:
+    from unittest.mock import AsyncMock
+except ImportError:
+    from asyncmock import AsyncMock
 
 import pytest
 from pytest_mock import MockerFixture

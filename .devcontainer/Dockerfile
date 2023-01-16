@@ -11,7 +11,7 @@ RUN groupadd -r ${USER} && useradd -m -r -s /bin/bash -g ${USER} ${USER}
 USER ${USER}
 
 # Install poetry
-RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.1.15 python3 -
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 FROM base as vscode
 
