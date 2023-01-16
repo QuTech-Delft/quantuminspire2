@@ -1,9 +1,10 @@
+import sys
 from typing import Any, Generator
 from unittest.mock import MagicMock, call
 
-try:
+if sys.version_info >= (3, 8):
     from unittest.mock import AsyncMock
-except ImportError:
+else:
     from asyncmock import AsyncMock
 
 import pytest
