@@ -1,8 +1,6 @@
 import sys
 from typing import Any, Generator
-from unittest.mock import MagicMock, call
-
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock, call
 
 import pytest
 from pytest_mock import MockerFixture
