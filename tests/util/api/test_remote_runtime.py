@@ -2,10 +2,7 @@ import sys
 from typing import Any, Generator
 from unittest.mock import MagicMock, call
 
-if sys.version_info >= (3, 8):
-    from unittest.mock import AsyncMock
-else:
-    from asyncmock import AsyncMock
+from unittest.mock import AsyncMock
 
 import pytest
 from pytest_mock import MockerFixture

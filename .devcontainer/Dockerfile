@@ -1,4 +1,4 @@
-FROM python:3.10-bullseye as base
+FROM python:3.11-bullseye as base
 
 # Build environment variables
 ENV DEBIAN_FRONTEND noninteractive

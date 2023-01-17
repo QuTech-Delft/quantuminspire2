@@ -10,9 +10,10 @@ repository = "https://github.com/quantum-inspire-2"
 classifiers = [
   'Development Status :: 4 - Beta',
   'Programming Language :: Python :: 3',
-  'Programming Language :: Python :: 3.7',
   'Programming Language :: Python :: 3.8',
   'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
   'License :: OSI Approved :: Apache Software License'
 ]
 
@@ -20,14 +21,12 @@ classifiers = [
 qi = "quantuminspire.cli.command_list:app"
 
 [tool.poetry.dependencies]
-python = "^3.7.2"
+python = "^3.8"
 typer = {extras = ["all"], version = "^0.6.1"}
 qutechopenql = "^0.11.1"
 qi-compute-api-client = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
-asyncmock = { version="^0.4.2", python = "<3.8" }
-importlib-metadata = { version="^6.0.0", python = "<3.8" }
 pytest = {extras = ["toml"], version = "^6.2.5"}
 pytest-cov = "^3.0.0"
 black = "^22.6.0"
