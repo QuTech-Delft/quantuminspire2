@@ -3,7 +3,6 @@
 SDK for the Quantum Inspire platform.
 """
 
-import sys
 from contextlib import suppress
 from importlib.metadata import PackageNotFoundError, version
 

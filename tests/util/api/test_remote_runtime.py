@@ -1,5 +1,4 @@
-import sys
-from typing import Any, Generator
+from typing import Generator
 from unittest.mock import AsyncMock, MagicMock, call
 
 import pytest
