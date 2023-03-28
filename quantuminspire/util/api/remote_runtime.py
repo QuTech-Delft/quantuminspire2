@@ -44,6 +44,7 @@ from compute_api_client import (
 
 from quantuminspire.sdk.circuit import Circuit
 from quantuminspire.util.api.base_runtime import BaseRuntime
+from quantuminspire.util.configuration import Settings
 
 
 class RemoteRuntime(BaseRuntime):
@@ -53,9 +54,9 @@ class RemoteRuntime(BaseRuntime):
     algorithms, files etc. The algorithm/circuit will also be run.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, settings: Settings) -> None:
         super().__init__()
-        self._configuration = Configuration(host="https://staging.qi2.quantum-inspire.com")
+        self._configuration = Configuration(host="https://staging.qi2.quantum-inspire.com", api_key=settings.user_id)
 
     def run(self, circuit: Circuit) -> None:
         """Execute provided algorithm/circuit."""

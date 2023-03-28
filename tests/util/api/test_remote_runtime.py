@@ -1,5 +1,5 @@
 from typing import Generator
-from unittest.mock import AsyncMock, MagicMock, call
+from unittest.mock import ANY, AsyncMock, MagicMock, call
 
 import pytest
 from pytest_mock import MockerFixture
@@ -43,18 +43,25 @@ def api_client(mocker: MockerFixture) -> Generator[MagicMock, None, None]:
     yield mocker.patch("quantuminspire.util.api.remote_runtime.ApiClient")
 
 
-def test_create(configuration: MagicMock) -> None:
-    _ = RemoteRuntime()
-    configuration.assert_called_once()
+@pytest.fixture
+def settings() -> MagicMock:
+    settings = MagicMock()
+    settings.user_id = "user_id"
+    return settings
 
 
-def test_run(api_client: MagicMock, compute_api_client: None) -> None:
-    runtime = RemoteRuntime()
+def test_create(configuration: MagicMock, settings: MagicMock) -> None:
+    _ = RemoteRuntime(settings)
+    configuration.assert_called_once_with(host=ANY, api_key="user_id")
+
+
+def test_run(api_client: MagicMock, compute_api_client: None, settings: MagicMock) -> None:
+    runtime = RemoteRuntime(settings)
     runtime.run(MagicMock())
     api_client.assert_has_calls([call().__aenter__(), call().__aexit__(None, None, None)])
 
 
-def test_get_results() -> None:
-    runtime = RemoteRuntime()
+def test_get_results(settings: MagicMock) -> None:
+    runtime = RemoteRuntime(settings)
     runtime.get_results()
     assert True
