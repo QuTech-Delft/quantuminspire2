@@ -1,4 +1,4 @@
-name: Test Python 🐍 package 📦
+name: Tests
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint:
-    name: Lint Python 🐍 package 📦
+    name: Linting
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -33,7 +33,7 @@ jobs:
       - name: Run pylint
         run: poetry run pylint quantuminspire
   unit-test:
-    name: Unit test Python 🐍 package 📦
+    name: Unit testing
     needs: lint
     strategy:
       fail-fast: false
@@ -66,7 +66,7 @@ jobs:
         run: poetry run pytest .
   complete:
     # see https://github.community/t/status-check-for-a-matrix-jobs/127354/7
-    name: Complete CI
+    name: Report status
     needs: [lint, unit-test]
     if: ${{ always() }}
     runs-on: ubuntu-latest
