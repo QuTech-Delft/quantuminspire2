@@ -44,24 +44,27 @@ def api_client(mocker: MockerFixture) -> Generator[MagicMock, None, None]:
 
 
 @pytest.fixture
-def settings() -> MagicMock:
+def mocked_settings(mocker: MockerFixture) -> Generator[MagicMock, None, None]:
     settings = MagicMock()
-    settings.user_id = "user_id"
-    return settings
+    settings.auths = {"https://staging.qi2.quantum-inspire.com": {"user_id": 1}}
+
+    mocked_settings = mocker.patch("quantuminspire.util.api.remote_runtime.Settings", return_value=settings)
+
+    return mocked_settings
 
 
-def test_create(configuration: MagicMock, settings: MagicMock) -> None:
-    _ = RemoteRuntime(settings)
-    configuration.assert_called_once_with(host=ANY, api_key="user_id")
+def test_create(configuration: MagicMock, mocked_settings: MagicMock) -> None:
+    _ = RemoteRuntime()
+    configuration.assert_called_once_with(host=ANY, api_key=1)
 
 
-def test_run(api_client: MagicMock, compute_api_client: None, settings: MagicMock) -> None:
-    runtime = RemoteRuntime(settings)
+def test_run(api_client: MagicMock, compute_api_client: None, mocked_settings: MagicMock) -> None:
+    runtime = RemoteRuntime()
     runtime.run(MagicMock())
     api_client.assert_has_calls([call().__aenter__(), call().__aexit__(None, None, None)])
 
 
-def test_get_results(settings: MagicMock) -> None:
-    runtime = RemoteRuntime(settings)
+def test_get_results(mocked_settings: MagicMock) -> None:
+    runtime = RemoteRuntime()
     runtime.get_results()
     assert True

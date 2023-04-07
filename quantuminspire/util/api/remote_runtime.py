@@ -54,9 +54,11 @@ class RemoteRuntime(BaseRuntime):
     algorithms, files etc. The algorithm/circuit will also be run.
     """
 
-    def __init__(self, settings: Settings) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        self._configuration = Configuration(host="https://staging.qi2.quantum-inspire.com", api_key=settings.user_id)
+        settings = Settings()
+        host = "https://staging.qi2.quantum-inspire.com"
+        self._configuration = Configuration(host=host, api_key=settings.auths[host]["user_id"])
 
     def run(self, circuit: Circuit) -> None:
         """Execute provided algorithm/circuit."""

@@ -4,14 +4,13 @@ import time
 
 from quantuminspire.sdk.circuit import Circuit
 from quantuminspire.util.api.remote_runtime import RemoteRuntime
-from quantuminspire.util.configuration import Settings
 
 with Circuit(platform_name="spin-2", program_name="prgm1") as c:
     k = c.init_kernel("new_kernel", 2)
     k.x(0)
     k.hadamard(1)
 
-runtime = RemoteRuntime(settings=Settings())
+runtime = RemoteRuntime()
 
 startTime = time.time()
 runtime.run(c)
