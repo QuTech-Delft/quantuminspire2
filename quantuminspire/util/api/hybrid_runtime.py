@@ -47,7 +47,7 @@ from quantuminspire.util.api.base_runtime import BaseRuntime
 from quantuminspire.util.configuration import Settings
 
 
-class RemoteRuntime(BaseRuntime):
+class HybridRuntime(BaseRuntime):
     """Connection to remote runtime.
 
     Create a connection with the remote runtime for Quantum Inspire. This connection creates the appropriate projects,
@@ -60,30 +60,30 @@ class RemoteRuntime(BaseRuntime):
         host = "https://staging.qi2.quantum-inspire.com"
         self._configuration = Configuration(host=host, api_key={"user": str(settings.auths[host]["user_id"])})
 
-    def run(self, circuit: Circuit) -> None:
+    def run(self, payload: str) -> None:
         """Execute provided algorithm/circuit."""
-        asyncio.run(self._create_flow(circuit))
+        asyncio.run(self._create_flow(payload))
 
     def get_results(self) -> None:
         """Get results for algorithm/circuit."""
 
-    async def _create_flow(self, circuit: Circuit) -> None:
+    async def _create_flow(self, payload: str) -> None:
         """Call the necessary methods in the correct order, with the correct parameters."""
         async with ApiClient(self._configuration) as api_client:
-            project = await self._create_project(api_client, circuit)
+            project = await self._create_project(api_client)
             algorithm = await self._create_algorithm(api_client, project)
             commit = await self._create_commit(api_client, algorithm)
-            file = await self._create_file(api_client, commit, circuit)
+            file = await self._create_file(api_client, commit, payload)
             batch_run = await self._create_batch_run(api_client)
             await self._create_run(api_client, file, batch_run)
             await self._enqueue_batch_run(api_client, batch_run)
 
     @staticmethod
-    async def _create_project(api_client: ApiClient, circuit: Circuit) -> Project:
+    async def _create_project(api_client: ApiClient) -> Project:
         api_instance = ProjectsApi(api_client)
         obj = ProjectIn(
             owner_id=1,
-            name=circuit.program_name,
+            name="HQCA test algorithm",
             description="Quantum Circuit created by SDK",
             starred=False,
         )
@@ -94,7 +94,7 @@ class RemoteRuntime(BaseRuntime):
         api_instance = AlgorithmsApi(api_client)
         obj = AlgorithmIn(
             project_id=project.id,
-            type=AlgorithmType.QUANTUM,
+            type=AlgorithmType.HYBRID,
             shared=ShareType.PRIVATE,
         )
         return await api_instance.create_algorithm_algorithms_post(obj)
@@ -111,11 +111,11 @@ class RemoteRuntime(BaseRuntime):
         return await api_instance.create_commit_commits_post(obj)
 
     @staticmethod
-    async def _create_file(api_client: ApiClient, commit: Commit, circuit: Circuit) -> File:
+    async def _create_file(api_client: ApiClient, commit: Commit, payload: str) -> File:
         api_instance = FilesApi(api_client)
         obj = FileIn(
             commit_id=commit.id,
-            content=circuit.qasm,
+            content=payload,
             language_id=1,
             compile_stage=CompileStage.NONE,
             compile_properties={},

@@ -66,6 +66,8 @@ class Circuit:
         self._openql_program = openql.Program(self._program_name, self._openql_platform, self.max_number_of_qubits)
         for kernel in self._openql_kernels:
             self._openql_program.add_kernel(kernel)
+        self._openql_program.get_compiler().set_option("initialqasmwriter.cqasm_version", "1.0")
+        self._openql_program.get_compiler().set_option("initialqasmwriter.with_metadata", "no")
         self._openql_program.compile()
         self._cqasm = self._process_cqasm_file()
 
