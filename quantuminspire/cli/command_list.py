@@ -1,21 +1,18 @@
 """Module containing the commands for the Quantum Inspire 2 CLI."""
 from enum import Enum
-from pathlib import Path
 from typing import Optional
 
 import typer
 from typer import Typer
 
-from quantuminspire.util.api.hybrid_runtime import HybridRuntime
-
 app = Typer(add_completion=False, no_args_is_help=True)
-algorithms_app = Typer()
+algorithms_app = Typer(no_args_is_help=True)
 app.add_typer(algorithms_app, name="algorithms", help="Manage algorithms")
-configuration_app = Typer()
+configuration_app = Typer(no_args_is_help=True)
 app.add_typer(configuration_app, name="config", help="Manage configuration")
-projects_app = Typer()
+projects_app = Typer(no_args_is_help=True)
 app.add_typer(projects_app, name="projects", help="Manage projects")
-files_app = Typer()
+files_app = Typer(no_args_is_help=True)
 app.add_typer(files_app, name="files", help="Manage files")
 
 
@@ -228,14 +225,12 @@ def sync_projects(
 
 @files_app.command("upload")
 def upload_files(name: str = typer.Argument(..., help="The name of the file to upload")) -> None:
+    """Upload a file to the QI API.
+
+    Upload a Hybrid Quantum/Classical Algorithm to the Quantum Inspire API. This file is marked as a hybrid algorithm
+    when sent to the API.
+    """
     typer.echo(f"Upload file with name: {name}")
-    runtime = HybridRuntime()
-    payload = Path(name).read_text()
-    try:
-        runtime.run(payload)
-    except:
-        pass
-    typer.echo("File uploaded")
 
 
 @app.command("login")
