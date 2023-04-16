@@ -9,4 +9,4 @@ def execute(results: Dict[str, List[float]], shots_requested: int, shots_done: i
         k.hadamard(0)
         k.cnot(0, 1)
 
-    return cast(str, c.qasm)
+    return c.qasm
