@@ -1,4 +1,4 @@
-from typing import cast, Dict, List
+from typing import Dict, List, cast
 
 from quantuminspire.sdk.circuit import Circuit
 
