@@ -26,5 +26,6 @@ class BaseRuntime(ABC):
 
     def run(self, circuit: Circuit) -> None:
         """Execute provided algorithm/circuit."""
+
     def get_results(self) -> None:
         """Get results for algorithm/circuit."""

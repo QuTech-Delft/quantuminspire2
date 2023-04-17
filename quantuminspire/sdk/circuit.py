@@ -54,6 +54,7 @@ class Circuit:
 
     def initialize(self) -> None:
         """Initialize the quantum circuit."""
+
     def finalize(self) -> None:
         """Finalize the quantum circuit.
 

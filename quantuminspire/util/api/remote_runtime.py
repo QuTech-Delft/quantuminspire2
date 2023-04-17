@@ -67,6 +67,7 @@ class RemoteRuntime(BaseRuntime):
 
     def get_results(self) -> None:
         """Get results for algorithm/circuit."""
+
     async def _create_flow(self, circuit: Circuit) -> None:
         """Call the necessary methods in the correct order, with the correct parameters."""
         async with ApiClient(self._configuration) as api_client:
