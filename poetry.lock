@@ -422,22 +422,17 @@ graph = ["objgraph (>=1.7.2)"]
 
 [[package]]
 name = "docformatter"
-version = "1.6.0"
-description = "Formats docstrings to follow PEP 257"
+version = "1.4"
+description = "Formats docstrings to follow PEP 257."
 category = "dev"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = "*"
 files = [
-    {file = "docformatter-1.6.0-py3-none-any.whl", hash = "sha256:dfad58437b560708eb74ccaccba5c91a0f98f534ed51b7af02aa35225e9eb6c2"},
-    {file = "docformatter-1.6.0.tar.gz", hash = "sha256:2346dcc239b73bc4b62d1035e240d1338d154fb047a7e492f0168a93744222e2"},
+    {file = "docformatter-1.4.tar.gz", hash = "sha256:064e6d81f04ac96bc0d176cbaae953a0332482b22d3ad70d47c8a7f2732eef6f"},
 ]
 
 [package.dependencies]
-charset_normalizer = ">=3.0.0,<4.0.0"
-untokenize = ">=0.1.1,<0.2.0"
-
-[package.extras]
-tomli = ["tomli (>=2.0.0,<3.0.0)"]
+untokenize = "*"
 
 [[package]]
 name = "exceptiongroup"
@@ -1392,4 +1387,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "83b0371a7a4836601ab933fe538f525465cd7de55217ec6c901ce6bc411b3362"
+content-hash = "d992433ddc53c091f9b60e183151838d644cadfb33aad2d4fc96c81548fe2d5b"
