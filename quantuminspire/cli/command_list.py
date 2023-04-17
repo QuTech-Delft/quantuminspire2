@@ -65,8 +65,8 @@ def delete_algorithm(remote: bool = typer.Option(False, help="Also delete the re
 def describe_algorithm(remote: bool = typer.Option(False, help="Use the remote resource as source of truth")) -> None:
     """Describe algorithm.
 
-    Describe the algorithm. Both metadata and data from the algorithm itself are shown. The algorithm is selected on the
-    folder the user is currently in. Based on the argument, the remote algorithm can also be described.
+    Describe the algorithm. Both metadata and data from the algorithm itself are shown. The algorithm is selected on
+    the folder the user is currently in. Based on the argument, the remote algorithm can also be described.
     """
     if remote:
         typer.echo("Describe remote algorithm")
