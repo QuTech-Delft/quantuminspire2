@@ -1,6 +1,6 @@
-from typing import Dict, List, cast
+from typing import Dict, List
 
-from quantuminspire.sdk.circuit import Circuit
+from quantuminspire.sdk.models.circuit import Circuit
 
 
 def execute(results: Dict[str, List[float]], shots_requested: int, shots_done: int) -> str:
@@ -9,4 +9,4 @@ def execute(results: Dict[str, List[float]], shots_requested: int, shots_done: i
         k.hadamard(0)
         k.cnot(0, 1)
 
-    return c.qasm
+    return c.content
