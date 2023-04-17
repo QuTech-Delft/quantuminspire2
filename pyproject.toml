@@ -25,22 +25,18 @@ python = "^3.8"
 typer = {extras = ["all"], version = "^0.7.0"}
 qutechopenql = "^0.11.1"
 pydantic = "^1.10.7"
+qi-compute-api-client = {git = "https://github.com/QuTech-Delft/compute-api-client.git"}
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = {extras = ["toml"], version = "^7.3.0"}
 pytest-cov = "^4.0.0"
-black = "^22.6.0"
-isort = "^5.10.1"
 pylint = "^2.17.2"
 coverage = {extras = ["toml"], version = "^7.2.3"}
 mypy = "^1.2"
 docformatter = "^1.4"
 pytest-mock = "^3.8.2"
-
-[tool.poetry.group.dev.dependencies]
 isort = "^5.11.4"
 black = "^22.12.0"
-qi-compute-api-client = {git = "https://github.com/QuTech-Delft/compute-api-client.git"}
 
 [tool.pytest.ini_options]
 addopts = "-v --cov --cov-report term-missing:skip-covered --cov-report xml"
