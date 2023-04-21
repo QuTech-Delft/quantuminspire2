@@ -1,4 +1,4 @@
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 from quantuminspire.sdk.models.circuit import Circuit
 
@@ -36,7 +36,6 @@ def execute(results: Dict[str, float], shots_requested: int, shots_done: int) ->
     print(shots_requested)
     print(shots_done)
     return generate_circuit()
-
 
 
 def finalize(list_of_measurements: Dict[int, List[Any]]) -> Dict[str, Any]:
