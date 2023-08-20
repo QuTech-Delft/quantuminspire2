@@ -96,5 +96,10 @@ max-line-length = 120
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.docformatter]
+recursive = true
+wrap-summaries = 119
+wrap-descriptions = 119
+
 [tool.pydantic-mypy]
 warn_untyped_fields = true
