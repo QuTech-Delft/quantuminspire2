@@ -29,7 +29,6 @@ async def execute(qi) -> None:
             results: The results from iteration n-1.
             shots_requested: The number of shots requested by the user for the previous iteration.
             shots_done: The number of shots actually run.
-
     """
     for i in range(1, 5):
         circuit = generate_circuit()
@@ -51,19 +50,22 @@ def finalize(list_of_measurements: Dict[int, List[Any]]) -> Dict[str, Any]:
         be everything serializable.
     """
     print(list_of_measurements)
-    return { "results": list_of_measurements }
+    return {"results": list_of_measurements}
 
 
 if __name__ == "__main__":
     import asyncio
+
     # Run the individual steps for debugging
     print("=== Circuit ===\n", generate_circuit())
+
     class MockExecuteCircuitResult:
         results = {"00": 0.490234, "11": 0.509766}
         shots_requested = 1024
         shots_done = 1024
-    class  MockQI:
-        async def execute_circuit(self, circuit: str,  number_of_shots: int) -> None:
+
+    class MockQI:
+        async def execute_circuit(self, circuit: str, number_of_shots: int) -> None:
             print(f"circuit:\n {circuit}")
             return MockExecuteCircuitResult()
 
