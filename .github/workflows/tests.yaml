@@ -54,7 +54,7 @@ jobs:
           poetry-version: "1.3.2"
       - name: Install tox
         run: pip install tox
-      - name: run tox lint and type
+      - name: run tox test
         run: tox -e test
   complete:
     # see https://github.community/t/status-check-for-a-matrix-jobs/127354/7
