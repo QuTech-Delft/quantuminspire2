@@ -39,11 +39,11 @@ isort = "^5.11.4"
 black = "^23.7.0"
 
 [tool.pytest.ini_options]
-addopts = "-v --cov --cov-report term-missing:skip-covered --cov-report xml --ignore=.tox"
+addopts = "-v --cov --cov-report term-missing:skip-covered --cov-report xml"
 
 [tool.coverage.run]
 branch = true
-omit = ["tests/*", ".tox/*"]
+omit = ["tests/*", "**/.tox/**"]
 
 [tool.coverage.report]
 show_missing = true
