@@ -101,7 +101,10 @@ def generate_objective_function(qi, graph) -> Callable:
     """This takes as input a graph and returns the objective function for scipy to minimize."""
 
     def f(theta):
-        """The actual function to minimize.  The first half of theta are the betas, the second half are the gammas."""
+        """The actual function to minimize.
+
+        The first half of theta are the betas, the second half are the gammas.
+        """
         beta = theta[:P]
         gamma = theta[P:]
         circuit = qaoa_circuit(graph, beta, gamma)
