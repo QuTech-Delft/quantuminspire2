@@ -106,12 +106,12 @@ def generate_objective_function(qi, graph) -> Callable:
         gamma = theta[P:]
         circuit = qaoa_circuit(graph, beta, gamma)
         # This slightly awkward. f needs to by a normal (non async) function since scipy can only minimize those.
-        # However, on qxruntime there is already an asycio event loop so we can't just call
+        # However, in the classical runtime there is already an asycio event loop so we can't just call
         #
         #   result = asyncio.run(qi.execute_circuit(circuit, SHOTS))
         #
         # and we have to do it in a separate thread instead. Ideally we solve these issues in
-        # qx-runtime so that we do not expose the end user to such technical difficulties.
+        # the classical so that we do not expose the end user to such technical difficulties.
         with ThreadPoolExecutor(1) as pool:
             coro = qi.execute_circuit(circuit, SHOTS)
             future = pool.submit(lambda: asyncio.run(coro))
