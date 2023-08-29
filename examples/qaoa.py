@@ -20,7 +20,7 @@ positions = nx.circular_layout(GRAPH)
 GRAPH.pos = positions
 P = 2
 SHOTS = 1024
-MAX_ITER = 4
+MAX_ITER = 100
 APPROXIMATED_MAXCUT_SIZE = None
 
 
@@ -78,6 +78,8 @@ def qaoa_circuit(graph: Graph, beta: np.ndarray, gamma: np.ndarray) -> str:
         init_kernel = circuit.init_kernel("initialize", graph.number_of_nodes())
         for i in graph.nodes:
             init_kernel.prepz(i)
+        for i in graph.nodes:
+            init_kernel.hadamard(i)
 
         for i in range(P):
             ug_kernel = circuit.init_kernel(f"U_gamma_{i + 1}", graph.number_of_nodes())
