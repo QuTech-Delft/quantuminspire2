@@ -15,7 +15,7 @@ def qxelarator() -> Mock:
     qxelarator = Mock()
 
     def execute_string(_circuit: str, iterations: int) -> SimpleNamespace:
-        return SimpleNamespace(results={}, info=SimpleNamespace(shots_requested=iterations, shots_done=iterations))
+        return SimpleNamespace(results={}, shots_requested=iterations, shots_done=iterations, state={})
 
     qxelarator.execute_string = Mock(side_effect=execute_string)
     return qxelarator
@@ -53,7 +53,7 @@ def test_local_runtime_run_quantum(qxelarator: Mock) -> None:
 
 async def test_local_runtime_run_hybrid(qxelarator: Mock, quantum_interface: Mock) -> None:
     runtime = LocalRuntime(qxelarator)
-    file = Path("tests/util/api/data/hqca_circuit.py")
+    file = Path("examples/hqca_circuit.py")
     algorithm = HybridAlgorithm("test", "Test")
     algorithm.read_file(file)
     await runtime.run_hybrid(algorithm, quantum_interface)

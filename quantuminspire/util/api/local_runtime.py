@@ -32,12 +32,12 @@ def import_qxelarator() -> types.ModuleType:  # pragma: no cover
 
     try:
         return importlib.import_module("qxelarator")
-    except ImportError:
+    except ModuleNotFoundError as exc:
         print(
-            "Dependencies for local execution not installed, install with 'pip install quantuminspire[local]",
+            "Error: Dependencies for local execution not installed, install with 'pip install quantuminspire[local]'",
             file=sys.stderr,
         )
-        raise
+        raise SystemExit from exc
 
 
 class LocalRuntime(BaseRuntime):
@@ -97,8 +97,8 @@ class LocalRuntime(BaseRuntime):
         result = self._qxelarator.execute_string(circuit, iterations=number_of_shots)
         return ExecuteCircuitResult(
             results=result.results,
-            shots_done=result.info.shots_done,
-            shots_requested=result.info.shots_requested,
+            shots_done=result.shots_done,
+            shots_requested=result.shots_requested,
         )
 
     def get_results(self, run_id: int) -> Any:
