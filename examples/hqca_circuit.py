@@ -65,7 +65,7 @@ if __name__ == "__main__":
     algorithm.read_file(Path(__file__))
 
     local_backend = LocalBackend()
-    run_id = local_backend.run(algorithm, 0)
-    results = local_backend.get_results(run_id)
+    job_id = local_backend.run(algorithm, 0)
+    results = local_backend.get_results(job_id)
 
     print("=== Execute ===\n", results)

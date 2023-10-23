@@ -245,9 +245,9 @@ def upload_files(
     backend = RemoteBackend()
     program = HybridAlgorithm(platform_name="spin-2", program_name=name)
     program.read_file(Path(name))
-    run_id = backend.run(program, backend_type_id=backend_type_id)
+    job_id = backend.run(program, backend_type_id=backend_type_id)
     typer.echo(f"Upload file with name: {name}")
-    typer.echo(f"run_id {run_id}")
+    typer.echo(f"job_id {job_id}")
 
 
 @files_app.command("run")
@@ -262,19 +262,19 @@ def run_file(
     algorithm.read_file(Path(name))
 
     local_backend = LocalBackend()
-    run_id = local_backend.run(algorithm, 0)
-    results = local_backend.get_results(run_id)
+    job_id = local_backend.run(algorithm, 0)
+    results = local_backend.get_results(job_id)
     typer.echo(f"{results}")
 
 
 @results_app.command("get")
-def get_results(run_id: int = typer.Argument(..., help="The id of the run")) -> None:
+def get_results(job_id: int = typer.Argument(..., help="The id of the run")) -> None:
     """Retrieve the results for a run.
 
     Takes the id as returned by upload_files and retrieves the results for that run, if it's finished.
     """
     backend = RemoteBackend()
-    results = backend.get_results(run_id)
+    results = backend.get_results(job_id)
 
     if results is None:
         typer.echo("No results.")
