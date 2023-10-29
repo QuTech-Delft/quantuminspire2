@@ -2,14 +2,6 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.241.1/containers/python-3
 {
 	"name": "QI2 SDK",
-	// "build": {
-	// 	"dockerfile": "Dockerfile",
-	// 	"context": "..",
-	// 	"target": "vscode",
-	// 	"args": {
-	// 		"USER": "vscode"
-	// 	}
-	// },
 	"dockerComposeFile": [
 		"./docker-compose.yaml"
 	],
