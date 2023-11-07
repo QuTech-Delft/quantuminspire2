@@ -8,10 +8,10 @@ from quantuminspire.util.api.quantum_interface import QuantumInterface
 
 
 def generate_circuit() -> str:
-    with Circuit(platform_name="spin-2", program_name="prgm1") as circuit:
-        kernel = circuit.init_kernel("new_kernel", 2)
-        kernel.hadamard(0)
-        kernel.cnot(0, 1)
+    with Circuit(number_of_qubits=2, program_name="prgm1") as circuit:
+        circuit.enter_section("my_section")
+        circuit.hadamard(0)
+        circuit.cnot(0, 1)
 
     return circuit.content
 
