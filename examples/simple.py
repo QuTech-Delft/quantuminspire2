@@ -5,12 +5,11 @@ import time
 from quantuminspire.sdk.models.circuit import Circuit
 from quantuminspire.util.api.remote_backend import RemoteBackend
 
-with Circuit(platform_name="spin-2", program_name="prgm1") as c:
-    k = c.init_kernel("new_kernel", 2)
-    k.x(0)
-    k.hadamard(1)
-    k.measure(0)
-    k.measure(1)
+with Circuit(number_of_qubits=2, program_name="prgm1") as c:
+    c.enter_section("my_section")
+    c.x(0)
+    c.hadamard(1)
+    c.measure(0).measure(1)
 
 print(c.content)
 

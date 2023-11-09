@@ -10,80 +10,74 @@ MOCK_QUANTUM_CIRCUIT = "quantum circuit"
 
 
 @pytest.fixture
-def openql(mocker: MockerFixture) -> Generator[MagicMock, None, None]:
-    yield mocker.patch("quantuminspire.sdk.models.circuit.openql")
+def opensquirrel(mocker: MockerFixture) -> Generator[MagicMock, None, None]:
+    yield mocker.patch("quantuminspire.sdk.models.circuit.opensquirrel")
 
 
-@pytest.fixture
-def mock_file(mocker: MockerFixture) -> None:
-    mocker.patch("quantuminspire.sdk.models.circuit.open", mocker.mock_open(read_data=MOCK_QUANTUM_CIRCUIT))
-    mocker.patch("quantuminspire.sdk.models.circuit.Path.unlink")
+def test_create(opensquirrel: MagicMock) -> None:
+    _ = Circuit(number_of_qubits=5, program_name="program")
+    opensquirrel.CircuitBuilder.assert_called_once()
 
 
-def test_create(openql: MagicMock) -> None:
-    _ = Circuit(platform_name="platform", program_name="program")
-    openql.set_option.assert_called_once()
-
-
-def test_get_program_name(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform_name="platform", program_name="program") as c:
+def test_get_program_name(opensquirrel: MagicMock) -> None:
+    with Circuit(number_of_qubits=5, program_name="program") as c:
         pass
 
     assert c.program_name == "program"
 
 
-def test_get_platform_name(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform_name="platform", program_name="program") as c:
+def test_get_platform_name(opensquirrel: MagicMock) -> None:
+    with Circuit(number_of_qubits=5, program_name="program") as c:
         pass
 
-    assert c.platform_name == "platform"
+    assert c.platform_name == "5_qubits"
 
 
-def test_get_content_type(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform_name="platform", program_name="program") as c:
+def test_get_content_type(opensquirrel: MagicMock) -> None:
+    with Circuit(number_of_qubits=5, program_name="program") as c:
         pass
 
     assert c.content_type == "quantum"
 
 
-def test_get_compile_stage(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform_name="platform", program_name="program") as c:
+def test_get_compile_stage(opensquirrel: MagicMock) -> None:
+    with Circuit(number_of_qubits=5, program_name="program") as c:
         pass
 
     assert c.compile_stage == "none"
 
 
-def test_create_empty_circuit(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform_name="platform", program_name="program") as c:
+def test_create_empty_circuit(opensquirrel: MagicMock) -> None:
+    opensquirrel.CircuitBuilder().to_circuit.return_value = MOCK_QUANTUM_CIRCUIT
+
+    with Circuit(number_of_qubits=5, program_name="program") as c:
         pass
 
-    openql.Program().compile.assert_called_once()
+    opensquirrel.CircuitBuilder().to_circuit.assert_called_once()
     assert c.content == MOCK_QUANTUM_CIRCUIT
 
 
-def test_create_circuit_with_kernel(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform_name="platform", program_name="program") as c:
-        k = c.init_kernel("kernel1", 2)
-        k.x(0)
+def test_create_circuit_with_kernel(opensquirrel: MagicMock) -> None:
+    with Circuit(number_of_qubits=5, program_name="program") as c:
+        c.enter_section("section1")
+        c.x(0)
 
-    openql.Program().add_kernel.assert_called_once()
-    assert c.max_number_of_qubits == 2
-
-
-def test_create_circuit_with_multiple_kernels(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform_name="platform", program_name="program") as c:
-        k = c.init_kernel("kernel1", 2)
-        k.x(0)
-        _ = c.init_kernel("kernel2", 3)
-
-    assert len(openql.Program().add_kernel.mock_calls) == 2
-    assert c.max_number_of_qubits == 3
+    opensquirrel.CircuitBuilder().comment.assert_called_once()
 
 
-def test_create_circuit_reuse_kernel(openql: MagicMock, mock_file: None) -> None:
-    with Circuit(platform_name="platform", program_name="program") as c:
-        k = c.init_kernel("kernel1", 2)
-        k.x(0)
-        c.add_kernel(k)
+def test_create_circuit_with_multiple_kernels(opensquirrel: MagicMock) -> None:
+    with Circuit(number_of_qubits=5, program_name="program") as c:
+        c.enter_section("section1")
+        c.x(0)
+        c.enter_section("section2")
 
-    assert len(openql.Program().add_kernel.mock_calls) == 2
+    assert len(opensquirrel.CircuitBuilder().comment.mock_calls) == 2
+
+
+def test_create_circuit_reuse_kernel(opensquirrel: MagicMock) -> None:
+    with Circuit(number_of_qubits=5, program_name="program") as c:
+        s1 = c.enter_section("section1")
+        s1.x(0)
+        c.enter_section("section2")
+
+    assert len(opensquirrel.CircuitBuilder().comment.mock_calls) == 2
