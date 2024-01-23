@@ -24,8 +24,8 @@ qi = "quantuminspire.cli.command_list:app"
 python = "^3.8"
 typer = {extras = ["all"], version = "^0.9.0"}
 qutechopenql = "^0.11.1"
-pydantic = "^2.5.2"
-qi-compute-api-client = {git = "https://github.com/QuTech-Delft/compute-api-client.git", branch="0.19.0"}
+pydantic = "^2.5.3"
+qi-compute-api-client = {git = "https://github.com/QuTech-Delft/compute-api-client.git", branch="0.21.0"}
 qxelarator = {version = "^0.6.2", optional = true}
 pydantic-settings = "^2.1.0"
 
@@ -33,15 +33,15 @@ pydantic-settings = "^2.1.0"
 local = ["qxelarator"]
 
 [tool.poetry.group.dev.dependencies]
-pytest = {extras = ["toml"], version = "^7.4.3"}
+pytest = {extras = ["toml"], version = "^7.4.4"}
 pytest-cov = "^4.1.0"
 pylint = "^3.0.3"
-coverage = {extras = ["toml"], version = "^7.3.3"}
-mypy = "^1.7"
+coverage = {extras = ["toml"], version = "^7.4.0"}
+mypy = "^1.8"
 docformatter = "1.7.5"
 pytest-mock = "^3.12.0"
 isort = "^5.13.2"
-black = "^23.12.0"
+black = "^23.12.1"
 pytest-asyncio = "^0.23.2"
 
 
