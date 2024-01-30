@@ -28,6 +28,7 @@ pydantic = "^2.6.4"
 qi-compute-api-client = {git = "https://github.com/QuTech-Delft/compute-api-client.git", branch="0.26.0"}
 qxelarator = {version = "^0.6.2", optional = true}
 pydantic-settings = "^2.2.1"
+qiskit = "^0.45.2"
 
 [tool.poetry.extras]
 local = ["qxelarator"]
