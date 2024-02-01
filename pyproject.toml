@@ -29,6 +29,8 @@ qi-compute-api-client = {git = "https://github.com/QuTech-Delft/compute-api-clie
 qxelarator = {version = "^0.6.2", optional = true}
 pydantic-settings = "^2.2.1"
 qiskit = "^0.45.2"
+qiskit-algorithms = "^0.2.2"
+qiskit-nature = "^0.7.1"
 
 [tool.poetry.extras]
 local = ["qxelarator"]

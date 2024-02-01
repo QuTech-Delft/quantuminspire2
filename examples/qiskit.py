@@ -16,6 +16,8 @@ def generate_qiskit_circuit() -> QuantumCircuit:
     qc = QuantumCircuit(qr, cr)
     qc.h(qr)
     qc.measure(qr, cr)
+    qc.h(qr)
+    qc.measure(qr, cr)
     return qc
 
 
