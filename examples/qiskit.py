@@ -39,11 +39,11 @@ def execute(qi: QuantumInterface) -> None:
     """
     backend = QuantumInspireBackend(qi)
     circuit = generate_qiskit_circuit()
+    print(circuit)
     job = qskit_execute(circuit, backend=backend)
-    #job = backend.run(qobj)
-    result = job.result()
-    counts = result.get_counts()
-    print(counts)
+
+    results = job.result()  # returns a list of ExperimentResult objects
+    print(results)
 
 
 def finalize(list_of_measurements: Dict[int, List[Any]]) -> Dict[str, Any]:
