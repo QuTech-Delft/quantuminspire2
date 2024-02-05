@@ -31,6 +31,7 @@ pydantic-settings = "^2.2.1"
 qiskit = "^0.45.2"
 qiskit-algorithms = "^0.2.2"
 qiskit-nature = "^0.7.1"
+pyscf = "^2.4.0"
 
 [tool.poetry.extras]
 local = ["qxelarator"]

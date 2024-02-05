@@ -10,7 +10,7 @@ from qiskit.providers.models.backendconfiguration import GateConfig
 from qiskit.compiler import assemble
 from qiskit.circuit import QuantumCircuit
 from qiskit.qobj import QasmQobj, QasmQobjExperiment
-from qiskit.result.models import ExperimentResult
+from qiskit.result.models import ExperimentResult, ExperimentResultData
 from qiskit.result.result import Result
 from qiskit.providers.jobstatus import JobStatus
 
@@ -24,19 +24,34 @@ class QIBackendSubJob:
         self.__result = result
 
     @property
-    def result(self) -> ExperimentResult:
-        return ExperimentResult(shots=self.__result.shots_done,
-                         success=self.__result.shots_done > 0,
-                         data=self.__result.results,
-                         status="COMPLETED")
+    def result(self) -> Result:
+        circuit_result = self.__result
+
+        exp_data =  ExperimentResultData(
+            circuit_result.results,
+            None
+        )
+
+        exp = ExperimentResult(
+            circuit_result.shots_done,
+            circuit_result.shots_done > 0,
+            exp_data
+        )
+        return  Result("QuantumInspireBackend",
+                       "2.0",
+                       0, 0,
+                       exp.success,
+                       [exp],
+                       None,
+                       "COMPLETED")
 
 
 class QIResult(Result):
-    def __init__(self, results: List[ExperimentResult]):
-        self.__results : List[ExperimentResult] = results
+    def __init__(self, results: List[Result]):
+        self.__results : List[Result] = results
 
     @property
-    def results(self) -> List[ExperimentResult]:
+    def results(self) -> List[Result]:
         return self.__results
 
 
@@ -51,9 +66,8 @@ class QiskitQuantumInspireJob(Job):
     def submit(self):
         pass
 
-    def result(self) -> List[ExperimentResult]:
-        results : List[ExperimentResult] = [j.result for j in self.__subjobs]
-        return results
+    def result(self) -> Result:
+        return self.__subjobs[0].result
 
     def status(self):
         return JobStatus.RUNNING

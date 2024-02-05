@@ -6,7 +6,7 @@ import warnings
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-
+from typing import Any, Callable, Dict, List
 import numpy as np
 from qiskit.primitives import Estimator, BackendEstimator
 from qiskit.quantum_info import SparsePauliOp, Statevector, Pauli
@@ -38,11 +38,11 @@ class _IOHandler:  # todo: improve
     n_spatial_orbitals = 2
 
     def __init__(self):
-        with open("pauli.json") as fp:
-            self._read_values = [
-                (distance, nuclear_repulsion_energy, self._decode(encoded_pauli_list))
-                for distance, nuclear_repulsion_energy, encoded_pauli_list in json.load(fp)
-            ]
+        #with open("pauli.json") as fp:
+        #    self._read_values = [
+        #        (distance, nuclear_repulsion_energy, self._decode(encoded_pauli_list))
+        #        for distance, nuclear_repulsion_energy, encoded_pauli_list in json.load(fp)
+        #    ]
 
         self._write_values = list[tuple[float, float, list[tuple[str, dict[str, float]]]]]()
 
@@ -139,6 +139,9 @@ def execute(qi: QuantumInterface) -> None:
     c = calculator.calculate()
     print(c)
 
+
+def finalize(list_of_measurements: Dict[int, List[Any]]) -> Dict[str, Any]:
+    return {}
 
 def show_info(result: VQEResult | NumPyMinimumEigensolverResult):
     print(f"number of iterations: {result.cost_function_evals}")
