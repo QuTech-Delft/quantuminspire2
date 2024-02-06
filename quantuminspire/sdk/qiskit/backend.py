@@ -1,3 +1,23 @@
+# This code is based in part on:
+# https://github.com/QuTech-Delft/quantuminspire/tree/dev/src/quantuminspire/qiskit
+
+# Quantum Inspire SDK
+#
+# Copyright 2022 QuTech Delft
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
 import copy
 import uuid
 import io
@@ -19,61 +39,49 @@ from quantuminspire.sdk.qiskit.measurements import Measurements
 from quantuminspire.sdk.qiskit.exceptions import QiskitBackendError
 from quantuminspire.sdk.qiskit.circuit_parser import CircuitToString
 
-class QIBackendSubJob:
-    def __init__(self, result: ExecuteCircuitResult):
-        self.__result = result
-
-    @property
-    def result(self) -> Result:
-        circuit_result = self.__result
-
-        exp_data =  ExperimentResultData(
-            circuit_result.results,
-            None
-        )
-
-        exp = ExperimentResult(
-            circuit_result.shots_done,
-            circuit_result.shots_done > 0,
-            exp_data
-        )
-        return  Result("QuantumInspireBackend",
-                       "2.0",
-                       0, 0,
-                       exp.success,
-                       [exp],
-                       None,
-                       "COMPLETED")
-
-
-class QIResult(Result):
-    def __init__(self, results: List[Result]):
-        self.__results : List[Result] = results
-
-    @property
-    def results(self) -> List[Result]:
-        return self.__results
-
-
 
 class QiskitQuantumInspireJob(Job):
 
     def __init__(self, qi: QuantumInterface, backend: Optional[Backend], job_id: str, **kwargs) -> None:
         super().__init__(backend, job_id, **kwargs)
         self.__qi = qi
-        self.__subjobs : List[QIBackendSubJob] = []
+        self.__results : List[ExecuteCircuitResult] = []
 
     def submit(self):
         pass
 
     def result(self) -> Result:
-        return self.__subjobs[0].result
+
+        job_results = []
+        for circuit_result in self.__results:
+
+            exp_data = ExperimentResultData(
+                counts=circuit_result.results,
+                snapshots=circuit_result.results
+            )
+
+            exp = ExperimentResult(
+                circuit_result.shots_done,
+                circuit_result.shots_done > 0,
+                exp_data
+            )
+
+            job_results.append(exp)
+
+
+        return Result("QuantumInspireBackend",
+                      "2.0",
+                      0, 0,
+                      len(job_results) > 0,
+                      job_results,
+                      None,
+                      status="COMPLETED")
 
     def status(self):
-        return JobStatus.RUNNING
+        return JobStatus.DONE
 
-    def add_job(self, job: QIBackendSubJob):
-        self.__subjobs.append(job)
+    def add_result(self, result: ExecuteCircuitResult):
+        self.__results.append(result)
 
 
 class QuantumInspireBackend(Backend):
@@ -158,8 +166,8 @@ class QuantumInspireBackend(Backend):
                 self.__validate_nr_of_clbits_conditional_gates(experiment)
 
             measurements.validate_unsupported_measurements()
-            job_for_experiment = self._submit_experiment(experiment, number_of_shots, measurements)
-            job.add_job(job_for_experiment)
+            result = self._submit_experiment(experiment, number_of_shots, measurements)
+            job.add_result(result)
 
         job.experiments = experiments
         return job
@@ -202,11 +210,11 @@ class QuantumInspireBackend(Backend):
             return stream.getvalue()
 
     def _submit_experiment(self, experiment: QasmQobjExperiment, number_of_shots: int,
-                           measurements: Measurements) -> QIBackendSubJob:
+                           measurements: Measurements) -> ExecuteCircuitResult:
         compiled_qasm = self._generate_cqasm(experiment, measurements)
 
         result = self.__qi.execute_circuit(compiled_qasm, number_of_shots)
-        return QIBackendSubJob(result)
+        return result
 
 
     def __validate_number_of_shots(self, number_of_shots: int) -> None:
