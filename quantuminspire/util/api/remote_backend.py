@@ -13,7 +13,7 @@ language governing permissions and limitations under the License.
 """
 
 import asyncio
-from typing import Any, List
+from typing import Any, List, Optional
 
 from compute_api_client import (
     Algorithm,
@@ -60,7 +60,7 @@ class RemoteBackend(BaseBackend):
         host = "https://staging.qi2.quantum-inspire.com"
         self._configuration = Configuration(host=host, api_key={"user": str(settings.auths[host]["user_id"])})
 
-    def run(self, program: BaseAlgorithm, backend_type_id: int, number_of_shots: int | None = None) -> int:
+    def run(self, program: BaseAlgorithm, backend_type_id: int, number_of_shots: Optional[int] = None) -> int:
         """Execute provided algorithm/circuit."""
         return asyncio.run(self._create_flow(program, backend_type_id, number_of_shots))
 
@@ -77,7 +77,7 @@ class RemoteBackend(BaseBackend):
         return asyncio.run(self._get_results(job_id))
 
     async def _create_flow(
-        self, program: BaseAlgorithm, backend_type_id: int, number_of_shots: int | None = None
+        self, program: BaseAlgorithm, backend_type_id: int, number_of_shots: Optional[int] = None
     ) -> int:
         """Call the necessary methods in the correct order, with the correct parameters."""
         async with ApiClient(self._configuration) as api_client:
@@ -141,7 +141,7 @@ class RemoteBackend(BaseBackend):
 
     @staticmethod
     async def _create_job(
-        api_client: ApiClient, file: File, batch_job: BatchJob, number_of_shots: int | None = None
+        api_client: ApiClient, file: File, batch_job: BatchJob, number_of_shots: Optional[int] = None
     ) -> Job:
         api_instance = JobsApi(api_client)
         obj = JobIn(file_id=file.id, batch_job_id=batch_job.id, number_of_shots=number_of_shots)
