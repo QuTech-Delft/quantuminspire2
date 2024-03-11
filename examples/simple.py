@@ -14,9 +14,6 @@ if __name__ == "__main__":
         k.measure(0)
         k.measure(1)
 
-    print(c.content)
-    print(f"number of qubits: {c.max_number_of_qubits}")
-
     backend = RemoteBackend()
 
     startTime = time.time()

@@ -1,9 +1,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,intellij+all,visualstudiocode,vagrant
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,intellij+all,visualstudiocode,vagrant
 
-### custom ignores
-scratch
-
 ### Intellij+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
@@ -285,4 +282,7 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,intellij+all,visualstudiocode,vagrant
 
+
+### custom ignores
+scratch
 quantuminspire/**/output
