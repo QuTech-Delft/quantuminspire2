@@ -31,10 +31,7 @@ pydantic-settings = "^2.2.1"
 qiskit = "^0.45.2"
 qiskit-algorithms = "^0.2.2"
 qiskit-nature = "^0.7.1"
-pyscf = "^2.4.0"
-
-[tool.distutils.bdist_wheel]
-universal = true
+pyscf = {version = "^2.4.0", markers = 'sys_platform != "win32"'}
 
 [tool.poetry.extras]
 local = ["qxelarator"]
