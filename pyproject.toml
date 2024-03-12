@@ -33,6 +33,9 @@ qiskit-algorithms = "^0.2.2"
 qiskit-nature = "^0.7.1"
 pyscf = "^2.4.0"
 
+[tool.distutils.bdist_wheel]
+universal = true
+
 [tool.poetry.extras]
 local = ["qxelarator"]
 
