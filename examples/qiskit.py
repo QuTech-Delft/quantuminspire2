@@ -1,13 +1,14 @@
 from pathlib import Path
 from typing import Any, Dict, List
 
+from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister
+from qiskit import execute as qskit_execute
+
 from quantuminspire.sdk.models.circuit import Circuit
-from quantuminspire.sdk.qiskit.backend import QuantumInspireBackend
 from quantuminspire.sdk.models.hybrid_algorithm import HybridAlgorithm
+from quantuminspire.sdk.qiskit.backend import QuantumInspireBackend
 from quantuminspire.util.api.local_backend import LocalBackend
 from quantuminspire.util.api.quantum_interface import QuantumInterface
-
-from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute as qskit_execute
 
 
 def generate_qiskit_circuit() -> QuantumCircuit:
@@ -60,6 +61,7 @@ def finalize(list_of_measurements: Dict[int, List[Any]]) -> Dict[str, Any]:
     """
     print(list_of_measurements)
     return {"results": list_of_measurements}
+
 
 if __name__ == "__main__":
     # Run the individual steps for debugging

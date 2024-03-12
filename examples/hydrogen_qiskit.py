@@ -5,22 +5,24 @@ import json
 import warnings
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List
-from qiskit.primitives import Estimator, BackendEstimator
-from qiskit_algorithms import VQEResult, NumPyMinimumEigensolverResult
-from qiskit_algorithms.minimum_eigensolvers import NumPyMinimumEigensolver, VQE
+
+from qiskit.primitives import BackendEstimator, Estimator
+from qiskit_algorithms import NumPyMinimumEigensolverResult, VQEResult
+from qiskit_algorithms.minimum_eigensolvers import VQE, NumPyMinimumEigensolver
 from qiskit_algorithms.optimizers import COBYLA
-from qiskit_nature.second_q.circuit.library import HartreeFock, UCCSD
+from qiskit_nature.second_q.circuit.library import UCCSD, HartreeFock
 from qiskit_nature.second_q.drivers import PySCFDriver
 from qiskit_nature.second_q.mappers import JordanWignerMapper, ParityMapper
 
-
-from quantuminspire.util.api.quantum_interface import QuantumInterface
 from quantuminspire.sdk.qiskit.backend import QuantumInspireBackend
+from quantuminspire.util.api.quantum_interface import QuantumInterface
+
 
 @dataclass
 class _GroundStateEnergyResults:
     result: VQEResult | NumPyMinimumEigensolverResult
     nuclear_repulsion_energy: float
+
 
 def calculate_H0(backend: QuantumInspireBackend, distance: float = 0.735) -> _GroundStateEnergyResults:
 
@@ -50,8 +52,9 @@ def calculate_H0(backend: QuantumInspireBackend, distance: float = 0.735) -> _Gr
     print(f"{distance=}: nuclear_repulsion_energy={nuclear_repulsion_energy}, eigenvalue={result.eigenvalue}")
     return _GroundStateEnergyResults(result, nuclear_repulsion_energy)
 
+
 def execute(qi: QuantumInterface) -> None:
-    c= calculate_H0(backend=QuantumInspireBackend(qi))
+    c = calculate_H0(backend=QuantumInspireBackend(qi))
     print(c)
 
 
