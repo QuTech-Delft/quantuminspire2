@@ -26,7 +26,7 @@ from quantuminspire.sdk.qiskit.measurements import Measurements
 class CircuitToString:
     """Contains the translational elements to convert the Qiskit circuits to cQASM code."""
 
-    def __init__(self, basis_gates: List[str], measurements: Measurements) -> None:
+    def __init__(self, basis_gates: List[str], measurements: Measurements, full_state_projection: bool = False) -> None:
         """
         :param basis_gates: List of basis gates from the configuration.
         :param measurements: The measured qubits/classical bits and the number of qubits and classical bits.
@@ -36,6 +36,7 @@ class CircuitToString:
             self.basis_gates.append("measure")
         self.bfunc_instructions: List[QasmQobjInstruction] = []
         self.measurements = measurements
+        self.full_state_projection = full_state_projection
 
     @staticmethod
     def _gate_not_supported(
@@ -550,7 +551,8 @@ class CircuitToString:
         :param stream: The string-io stream to where the resulting cQASM is written.
         :param instruction: The Qiskit instruction to translate to cQASM.
         """
-        stream.write(f"measure q[{instruction.qubits[0]}]\n")
+        if not self.full_state_projection:
+            stream.write(f"measure q[{instruction.qubits[0]}]\n")
 
     @staticmethod
     def get_mask_data(mask: int) -> Tuple[int, int]:

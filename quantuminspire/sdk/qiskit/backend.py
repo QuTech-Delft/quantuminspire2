@@ -199,7 +199,9 @@ class QuantumInspireBackend(Backend):  # type: ignore
             status_msg="online",
         )
 
-    def _generate_cqasm(self, experiment: QasmQobjExperiment, measurements: Measurements) -> str:
+    def _generate_cqasm(
+        self, experiment: QasmQobjExperiment, measurements: Measurements, full_state_projection: bool = True
+    ) -> str:
         """Generates the cQASM from the Qiskit experiment.
 
         :param experiment: The experiment that contains instructions to be converted to cQASM.
@@ -207,7 +209,7 @@ class QuantumInspireBackend(Backend):  # type: ignore
         :raises QiskitBackendError: If a Qiskit instruction is not in the basis gates set of Quantum Inspire backend.
         :return: The cQASM code that can be sent to the Quantum Inspire API.
         """
-        parser = CircuitToString(Backend.configuration(self).basis_gates, measurements)
+        parser = CircuitToString(Backend.configuration(self).basis_gates, measurements, full_state_projection)
         number_of_qubits = experiment.header.n_qubits
         instructions = experiment.instructions
         with io.StringIO() as stream:
@@ -262,8 +264,10 @@ class QuantumInspireBackend(Backend):  # type: ignore
         number_of_clbits = header.memory_slots
 
         if number_of_clbits > number_of_qubits:
+            print("GOLON")
             if any(hasattr(instruction, "conditional") for instruction in experiment.instructions):
                 # no problem when there are no conditional gate operations
+                print("JOCA")
                 raise QiskitBackendError(
                     "Number of classical bits must be less than or equal to the"
                     " number of qubits when using conditional gate operations"

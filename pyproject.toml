@@ -56,6 +56,7 @@ asyncio_mode = "auto"
 
 [tool.coverage.run]
 branch = true
+source = ["quantuminspire"]
 omit = ["tests/*", "**/.tox/**"]
 
 [tool.coverage.report]
@@ -92,7 +93,8 @@ plugins = [
     "pydantic.mypy"
 ]
 exclude = [
-    "examples/"
+    "examples/",
+    "tests/sdk/qiskit/"
 ]
 
 [tool.isort]
