@@ -160,8 +160,6 @@ class QuantumInspireBackend(Backend):  # type: ignore
         allow_fsp: bool = True,
         **run_config: Dict[str, Any],
     ) -> QiskitQuantumInspireJob:
-
-        del allow_fsp
         run_config_dict = self._get_run_config(shots=shots, memory=memory, **run_config)
 
         qobj = assemble(run_input, self, **run_config_dict)
@@ -179,7 +177,7 @@ class QuantumInspireBackend(Backend):  # type: ignore
                 self.__validate_nr_of_clbits_conditional_gates(experiment)
 
             measurements.validate_unsupported_measurements()
-            result = self._submit_experiment(experiment, number_of_shots, measurements)
+            result = self._submit_experiment(experiment, number_of_shots, measurements, allow_fsp)
             job.add_result(result)
 
         job.experiments = experiments
@@ -221,9 +219,13 @@ class QuantumInspireBackend(Backend):  # type: ignore
             return stream.getvalue()
 
     def _submit_experiment(
-        self, experiment: QasmQobjExperiment, number_of_shots: int, measurements: Measurements
+        self,
+        experiment: QasmQobjExperiment,
+        number_of_shots: int,
+        measurements: Measurements,
+        allow_fsp: bool = True,
     ) -> ExecuteCircuitResult:
-        compiled_qasm = self._generate_cqasm(experiment, measurements)
+        compiled_qasm = self._generate_cqasm(experiment, measurements, allow_fsp)
 
         result = self.__qi.execute_circuit(compiled_qasm, number_of_shots)
         return result
@@ -264,10 +266,8 @@ class QuantumInspireBackend(Backend):  # type: ignore
         number_of_clbits = header.memory_slots
 
         if number_of_clbits > number_of_qubits:
-            print("GOLON")
             if any(hasattr(instruction, "conditional") for instruction in experiment.instructions):
                 # no problem when there are no conditional gate operations
-                print("JOCA")
                 raise QiskitBackendError(
                     "Number of classical bits must be less than or equal to the"
                     " number of qubits when using conditional gate operations"
