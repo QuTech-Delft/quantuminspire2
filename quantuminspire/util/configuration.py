@@ -1,15 +1,17 @@
 """Module containing the handler for the Quantum Inspire persistent configuration."""
+
 from __future__ import annotations
 
 import json
 import time
 from os import PathLike
 from pathlib import Path
-from typing import Annotated, Any, Dict, Optional, Tuple, Type
+from typing import Any, Dict, Optional, Tuple, Type
 
 from pydantic import BaseModel, BeforeValidator, HttpUrl
 from pydantic.fields import Field, FieldInfo
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
+from typing_extensions import Annotated
 
 Url = Annotated[str, BeforeValidator(lambda value: str(HttpUrl(value)).rstrip("/"))]
 

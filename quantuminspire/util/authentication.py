@@ -1,5 +1,5 @@
 import time
-from typing import Any, cast
+from typing import Any, Dict, Tuple, cast
 
 import compute_api_client
 import requests
@@ -32,13 +32,13 @@ class OauthDeviceSession:
         self._device_code = ""
         self._refresh_time_reduction = 5  # the number of seconds to refresh the expiration time
 
-    def _get_endpoints(self) -> tuple[str, str]:
+    def _get_endpoints(self) -> Tuple[str, str]:
         response = requests.get(self._settings.well_known_endpoint)
         response.raise_for_status()
         config = response.json()
         return config["token_endpoint"], config["device_authorization_endpoint"]
 
-    def initialize_authorization(self, scope: str = "api-access openid") -> dict[str, Any]:
+    def initialize_authorization(self, scope: str = "api-access openid") -> Dict[str, Any]:
         code_verifier = self._oauth_client.create_code_verifier(self._settings.code_verifyer_length)
         self._oauth_client.create_code_challenge(code_verifier, self._settings.code_challenge_method)
         data = {
@@ -54,7 +54,7 @@ class OauthDeviceSession:
         self.expires_at = time.monotonic() + self.expires_in
         self._device_code = str(response["device_code"])
 
-        return cast(dict[str, Any], response)
+        return cast(Dict[str, Any], response)
 
     def request_token(self) -> TokenInfo:
         data = {
