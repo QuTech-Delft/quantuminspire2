@@ -42,8 +42,6 @@ runner = CliRunner()
         (["projects", "list", "--remote", "--local"], "List remote and local projects"),
         (["projects", "sync", "--dest", "local"], "Sync projects with local"),
         (["projects", "sync", "--dest", "remote"], "Sync projects with remote"),
-        (["login"], "Login to https://api.qi2.quantum-inspire.com"),
-        (["login", "https://www.quantum-inspire.com"], "Login to https://www.quantum-inspire.com"),
         (["logout"], "Logout from https://api.qi2.quantum-inspire.com"),
         (["logout", "https://www.quantum-inspire.com"], "Logout from https://www.quantum-inspire.com"),
     ],
