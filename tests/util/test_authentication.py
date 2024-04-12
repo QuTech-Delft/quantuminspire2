@@ -52,7 +52,7 @@ def test_initialize_authorization(
     mocked_responses: responses.RequestsMock, mocked_device_session: OauthDeviceSession
 ) -> None:
     mocked_device_session.initialize_authorization()
-    assert mocked_device_session.interval == 1
+    assert mocked_device_session.polling_interval == 1
     assert mocked_device_session.expires_in == 60
     assert mocked_device_session.expires_at == 1000000 + 60
     assert mocked_device_session._device_code == "secret"
@@ -73,7 +73,7 @@ def test_poll_for_tokens_expired(
     mocked_device_session.initialize_authorization()
     mocked_responses.replace(responses.POST, "https://localhost/tokens", body=json.dumps({"error": error}), status=400)
     mocked_device_session.expires_at = 1000000 + 1
-    mocked_device_session.interval = 0.1
+    mocked_device_session.polling_interval = 0.1
     with pytest.raises(AuthorisationError):
         mocked_device_session.poll_for_tokens()
 
