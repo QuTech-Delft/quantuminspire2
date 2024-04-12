@@ -1,4 +1,5 @@
 """Module containing the handler for the Quantum Inspire persistent configuration."""
+from __future__ import annotations
 
 import json
 import time
@@ -89,7 +90,7 @@ class AuthSettings(BaseModel):
     well_known_endpoint: Url = (
         "https://auth.qi2.quantum-inspire.com/realms/oidc_production/.well-known/openid-configuration"
     )
-    tokens: TokenInfo | None = None
+    tokens: Optional[TokenInfo] = None
 
 
 class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
