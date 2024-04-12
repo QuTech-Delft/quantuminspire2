@@ -1,18 +1,16 @@
-from typing import Any
 from unittest.mock import MagicMock
 
-import pytest
 from pytest_mock import MockerFixture
 
 import quantuminspire.util.configuration as configuration
 
-
-@pytest.fixture
-def mocked_config_file(mocker: MockerFixture) -> Any:
-    config_file = mocker.patch("quantuminspire.util.configuration.Path")()
-    config_file.exists.return_value = True
-    config_file.read_text.return_value = '{"auths": {"https://host": {"well_known_endpoint": "https://some_url"}}}'
-    return config_file
+EXAMPLE_TOKENINFO = configuration.TokenInfo(
+    access_token="secret",
+    expires_in=100,
+    refresh_token="also_secret",
+    refresh_expires_in=200,
+    generated_at=10000,
+)
 
 
 def test_force_file_into_existence_file_does_not_exist(mocked_config_file: MagicMock) -> None:
@@ -95,7 +93,7 @@ def test_customise_sources(mocker: MockerFixture) -> None:
     )
 
 
-def test_settings_from_init() -> None:
+def test_settings_from_init(mocked_config_file: MagicMock) -> None:
     settings = configuration.Settings(auths={"https://example.com": {"well_known_endpoint": "https://some_url/"}})
     assert (
         settings.auths.items()
@@ -104,24 +102,10 @@ def test_settings_from_init() -> None:
 
 
 def test_tokeninfo() -> None:
-    tokeninfo = configuration.TokenInfo(
-        access_token="secret",
-        expires_in=100,
-        refresh_token="also_secret",
-        refresh_expires_in=200,
-        generated_at=10000,
-    )
-    assert tokeninfo.expires_at == 10100
-    assert tokeninfo.refresh_expires_at == 10200
+    assert EXAMPLE_TOKENINFO.expires_at == 10100
+    assert EXAMPLE_TOKENINFO.refresh_expires_at == 10200
 
 
 def test_store_tokens(mocked_config_file: MagicMock) -> None:
     settings = configuration.Settings()
-    tokeninfo = configuration.TokenInfo(
-        access_token="secret",
-        expires_in=100,
-        refresh_token="also_secret",
-        refresh_expires_in=200,
-        generated_at=10000,
-    )
-    settings.store_tokens("https://host", tokeninfo)
+    settings.store_tokens("https://host", EXAMPLE_TOKENINFO)

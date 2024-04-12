@@ -27,7 +27,7 @@ class OauthDeviceSession:
         self._oauth_client = Client(settings.client_id)
         self._headers = {"Content-Type": "application/x-www-form-urlencoded"}
         self.expires_in = 600
-        self.interval = 5
+        self.interval: float = 5
         self.expires_at = time.time()
         self._device_code = ""
 
@@ -64,8 +64,9 @@ class OauthDeviceSession:
         }
 
         response = requests.post(self._token_endpoint, data=data, headers=self._headers)
-        content = response.json()
+
         if response.status_code == 400:
+            content = response.json()
             if content["error"] == "authorization_pending":
                 raise AuthorisationPending(content["error"])
             if content["error"] == "slow_down":
@@ -73,6 +74,7 @@ class OauthDeviceSession:
                 raise AuthorisationPending(content["error"])
 
         if response.status_code == 200:
+            content = response.json()
             self._token_info = TokenInfo(**content)
             return self._token_info
 
@@ -112,12 +114,11 @@ class OauthDeviceSession:
 
 class Configuration(compute_api_client.Configuration):  # type: ignore[misc]
 
-    def __init__(self, host: str | None = None, oauth_session: OauthDeviceSession | None = None, **kwargs: Any):
+    def __init__(self, host: str, oauth_session: OauthDeviceSession, **kwargs: Any):
         self._oauth_session = oauth_session
         super().__init__(host=host, **kwargs)
 
     def auth_settings(self) -> Any:
-        if self._oauth_session is not None:
-            token_info = self._oauth_session.refresh()
-            self.access_token = token_info.access_token
+        token_info = self._oauth_session.refresh()
+        self.access_token = token_info.access_token
         return super().auth_settings()

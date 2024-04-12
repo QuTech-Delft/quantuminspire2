@@ -48,7 +48,7 @@ runner = CliRunner()
 )
 def test_cli_calls(args: List[str], output: str) -> None:
     result = runner.invoke(app, args)
-    assert result.exit_code == 0
+    assert result.exit_code == 0, repr(result.exception)
     assert output in result.stdout
 
 
@@ -93,3 +93,14 @@ def test_results_get_no_results(mocker: MockerFixture) -> None:
 
     assert result.exit_code == 1
     mock_remote_backend_inst.get_results.assert_called_once()
+
+
+def test_login(mocker: MockerFixture, mocked_config_file: MagicMock) -> None:
+    device_session = mocker.patch("quantuminspire.cli.command_list.OauthDeviceSession")()
+    webbrowser_open = mocker.patch("quantuminspire.cli.command_list.webbrowser.open")
+    result = runner.invoke(app, ["login", "https://host"])
+    assert result.exit_code == 0, repr(result.exception)
+    webbrowser_open.assert_called_once()
+    device_session.initialize_authorization.assert_called_once()
+    device_session.poll_for_tokens.assert_called_once()
+    assert "Login successful!" in result.stdout

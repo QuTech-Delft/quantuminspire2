@@ -33,9 +33,8 @@ qiskit-algorithms = "^0.3.0"
 qiskit-nature = "^0.7.1"
 pyscf = {version = "^2.4.0", markers = 'sys_platform != "win32"'}
 oauthlib = "^3.2.2"
-types-oauthlib = "^3.2.0.20240217"
 requests = "^2.31.0"
-ruff = "^0.3.5"
+
 
 [tool.poetry.extras]
 local = ["qxelarator"]
@@ -51,6 +50,9 @@ black = "^24.3.0"
 pytest-asyncio = "^0.23.6"
 ruff = "^0.3.5"
 types-requests = "^2.25.0"
+types-oauthlib = "^3.2.0.20240217"
+responses = "^0.25.0"
+freezegun = "^1.4.0"
 
 
 [tool.pytest.ini_options]
