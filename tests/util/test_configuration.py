@@ -102,7 +102,7 @@ def test_settings_from_init(mocked_config_file: MagicMock) -> None:
 
 
 def test_tokeninfo() -> None:
-    assert EXAMPLE_TOKENINFO.expires_at == 10100
+    assert EXAMPLE_TOKENINFO.access_expires_at == 10100
     assert EXAMPLE_TOKENINFO.refresh_expires_at == 10200
 
 

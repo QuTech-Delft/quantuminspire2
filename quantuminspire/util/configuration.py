@@ -70,7 +70,7 @@ class TokenInfo(BaseModel):
     generated_at: float = Field(default_factory=time.time)
 
     @property
-    def expires_at(self) -> float:
+    def access_expires_at(self) -> float:
         """Timestamp containing the time when the access token will expire."""
         return self.generated_at + self.expires_in
 

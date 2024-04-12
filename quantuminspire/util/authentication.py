@@ -26,11 +26,11 @@ class OauthDeviceSession:
         self._token_endpoint, self._device_endpoint = self._get_endpoints()
         self._oauth_client = Client(settings.client_id)
         self._headers = {"Content-Type": "application/x-www-form-urlencoded"}
-        self.expires_in = 600 # expiration time in seconds
-        self.polling_interval: float = 5 # polling interval in seconds
+        self.expires_in = 600  # expiration time in seconds
+        self.polling_interval: float = 5  # polling interval in seconds
         self.expires_at = time.time()
         self._device_code = ""
-        self._refresh_time_reduction = 5 # the number of seconds to refresh the expiration time
+        self._refresh_time_reduction = 5  # the number of seconds to refresh the expiration time
 
     def _get_endpoints(self) -> tuple[str, str]:
         response = requests.get(self._settings.well_known_endpoint)
@@ -95,7 +95,7 @@ class OauthDeviceSession:
         if self._token_info is None:
             raise AuthorisationError("You should authenticate first before you can refresh")
 
-        if self._token_info.expires_at > time.time() + self._refresh_time_reduction:
+        if self._token_info.access_expires_at > time.time() + self._refresh_time_reduction:
             return self._token_info
 
         data = {
