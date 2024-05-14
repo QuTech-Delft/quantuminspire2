@@ -108,8 +108,19 @@ def test_owner_id_none(mocked_config_file: MagicMock) -> None:
         settings.default_auth_settings.owner_id
 
 
-def test_owner_id(mocked_config_file: MagicMock) -> None:
+@pytest.mark.parametrize(
+    "team_member_id, team_member_id_expected, set_id",
+    [
+        (42, 42, False),
+        (999, 42, True),
+    ],
+)
+def test_owner_id_get_set(
+    mocked_config_file: MagicMock, team_member_id: int, team_member_id_expected: int, set_id: bool
+) -> None:
     settings = configuration.Settings(
-        auths={"https://example.com": {"team_member_id": 42}}, default_host="https://example.com"
+        auths={"https://example.com": {"team_member_id": team_member_id}}, default_host="https://example.com"
     )
-    assert settings.default_auth_settings.owner_id == 42
+    if set_id:
+        settings.default_auth_settings.owner_id = team_member_id_expected
+    assert settings.default_auth_settings.owner_id == team_member_id_expected

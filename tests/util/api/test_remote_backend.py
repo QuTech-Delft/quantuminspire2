@@ -1,7 +1,8 @@
+from typing import Any, List
 from unittest.mock import AsyncMock, MagicMock, call
 
 import pytest
-from compute_api_client import JobStatus
+from compute_api_client import JobStatus, Member
 from pytest_mock import MockerFixture
 
 from quantuminspire.util.api.remote_backend import RemoteBackend
@@ -67,12 +68,39 @@ def test_create(configuration: MagicMock, mocked_settings: MagicMock, mocked_aut
     )
 
 
+@pytest.mark.parametrize(
+    "expected_member_id, members_list, side_effect_user_input",
+    [
+        (1, [Member(id=1, team_id=4, user_id=6, role="member", is_active=True)], []),
+        (
+            2,
+            [
+                Member(id=1, team_id=4, user_id=6, role="member", is_active=True),
+                Member(id=2, team_id=5, user_id=7, role="member", is_active=True),
+            ],
+            [999, "Random", 2],
+        ),
+    ],
+)
 def test_run(
-    api_client: MagicMock, compute_api_client: None, mocked_settings: MagicMock, mocked_authentication: MagicMock
+    mocker: MockerFixture,
+    api_client: MagicMock,
+    compute_api_client: None,
+    mocked_settings: MagicMock,
+    mocked_authentication: MagicMock,
+    expected_member_id: int,
+    members_list: List[Member],
+    side_effect_user_input: List[Any],
 ) -> None:
+    members_api = MagicMock()
+    members_api.read_members_members_get = AsyncMock(return_value=members_list)
+    mocker.patch("quantuminspire.util.api.remote_backend.MembersApi", return_value=members_api)
+    mock_input = mocker.patch("builtins.input", side_effect=side_effect_user_input)
+
     backend = RemoteBackend()
     backend.run(MagicMock(), 10)
     api_client.assert_has_calls([call().__aenter__(), call().__aexit__(None, None, None)])
+    assert mock_input.call_count == len(side_effect_user_input)
 
 
 def test_get_results(

@@ -101,6 +101,10 @@ class AuthSettings(BaseModel):
             raise ValueError("Please set the default team_member_id for this host!")
         return self.team_member_id
 
+    @owner_id.setter
+    def owner_id(self, id: int) -> None:
+        self.team_member_id = id
+
 
 class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
     """The settings class for the Quantum Inspire persistent configuration."""
