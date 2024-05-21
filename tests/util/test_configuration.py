@@ -100,7 +100,7 @@ def test_tokeninfo() -> None:
 
 
 def test_store_tokens(mocked_config_file: MagicMock, mocker: MockerFixture) -> None:
-    mocker.patch("quantuminspire.util.configuration.get_team_member_id", return_value=1)
+    mocker.patch("quantuminspire.util.configuration.Settings._get_team_member_id", return_value=1)
     settings = configuration.Settings()
     settings.store_tokens("https://host", EXAMPLE_TOKENINFO)
 
@@ -139,6 +139,6 @@ def test_get_member_id(
     members_api.read_members_members_get = AsyncMock(return_value=members_list)
     mocker.patch("quantuminspire.util.configuration.MembersApi", return_value=members_api)
     mock_input = mocker.patch("builtins.input", side_effect=side_effect_user_input)
-    member_id = configuration.get_team_member_id(host="https://host", access_token="some token")
+    member_id = configuration.Settings._get_team_member_id(host="https://host", access_token="some token")
     assert member_id == expected_member_id
     assert mock_input.call_count == len(side_effect_user_input)
