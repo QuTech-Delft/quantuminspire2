@@ -161,7 +161,7 @@ class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
         This functions stores the team_member_id, access and refresh tokens in the config.json file.
         """
         self.auths[host].tokens = tokens
-        member_id = self._get_team_member_id(host=host, access_token=tokens.access_token)
+        member_id = self.get_team_member_id(host=host, access_token=tokens.access_token)
         self.auths[host].team_member_id = member_id
         assert isinstance(self.model_config["json_file"], PathLike)
         Path(self.model_config["json_file"]).write_text(
@@ -196,5 +196,5 @@ class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
                     typer.echo("Invalid input. Please enter a valid id or CTRL + C to cancel.")
 
     @classmethod
-    def _get_team_member_id(cls, host: str, access_token: str) -> int:
+    def get_team_member_id(cls, host: str, access_token: str) -> int:
         return asyncio.run(cls._fetch_team_member_id(host, access_token))
