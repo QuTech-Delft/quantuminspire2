@@ -7,7 +7,7 @@ import json
 import time
 from os import PathLike
 from pathlib import Path
-from typing import cast, Any, Dict, Optional, Tuple, Type
+from typing import Any, Dict, Optional, Tuple, Type, cast
 
 import typer
 from compute_api_client import ApiClient, Configuration, MembersApi
