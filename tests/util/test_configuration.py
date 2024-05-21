@@ -1,7 +1,9 @@
 import json
-from unittest.mock import MagicMock
+from typing import Any, List
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+from compute_api_client import Member
 from pytest_mock import MockerFixture
 
 import quantuminspire.util.configuration as configuration
@@ -97,7 +99,8 @@ def test_tokeninfo() -> None:
     assert EXAMPLE_TOKENINFO.refresh_expires_at == 10200
 
 
-def test_store_tokens(mocked_config_file: MagicMock) -> None:
+def test_store_tokens(mocked_config_file: MagicMock, mocker: MockerFixture) -> None:
+    mocker.patch("quantuminspire.util.configuration.get_team_member_id", return_value=1)
     settings = configuration.Settings()
     settings.store_tokens("https://host", EXAMPLE_TOKENINFO)
 
@@ -108,19 +111,34 @@ def test_owner_id_none(mocked_config_file: MagicMock) -> None:
         settings.default_auth_settings.owner_id
 
 
+def test_owner_id(mocked_config_file: MagicMock) -> None:
+    settings = configuration.Settings(
+        auths={"https://example.com": {"team_member_id": 42}}, default_host="https://example.com"
+    )
+    assert settings.default_auth_settings.owner_id == 42
+
+
 @pytest.mark.parametrize(
-    "team_member_id, team_member_id_expected, set_id",
+    "expected_member_id, members_list, side_effect_user_input",
     [
-        (42, 42, False),
-        (999, 42, True),
+        (1, [Member(id=1, team_id=4, user_id=6, role="member", is_active=True)], []),
+        (
+            2,
+            [
+                Member(id=1, team_id=4, user_id=6, role="member", is_active=True),
+                Member(id=2, team_id=5, user_id=7, role="member", is_active=True),
+            ],
+            [999, "Random", 2],
+        ),
     ],
 )
-def test_owner_id_get_set(
-    mocked_config_file: MagicMock, team_member_id: int, team_member_id_expected: int, set_id: bool
+def test_get_member_id(
+    mocker: MockerFixture, expected_member_id: int, members_list: List[Member], side_effect_user_input: List[Any]
 ) -> None:
-    settings = configuration.Settings(
-        auths={"https://example.com": {"team_member_id": team_member_id}}, default_host="https://example.com"
-    )
-    if set_id:
-        settings.default_auth_settings.owner_id = team_member_id_expected
-    assert settings.default_auth_settings.owner_id == team_member_id_expected
+    members_api = MagicMock()
+    members_api.read_members_members_get = AsyncMock(return_value=members_list)
+    mocker.patch("quantuminspire.util.configuration.MembersApi", return_value=members_api)
+    mock_input = mocker.patch("builtins.input", side_effect=side_effect_user_input)
+    member_id = configuration.get_team_member_id(host="https://host", access_token="some token")
+    assert member_id == expected_member_id
+    assert mock_input.call_count == len(side_effect_user_input)

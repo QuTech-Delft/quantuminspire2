@@ -15,7 +15,6 @@ language governing permissions and limitations under the License.
 import asyncio
 from typing import Any, List, Optional
 
-import typer
 from compute_api_client import (
     Algorithm,
     AlgorithmIn,
@@ -34,7 +33,6 @@ from compute_api_client import (
     JobIn,
     JobsApi,
     JobStatus,
-    MembersApi,
     Project,
     ProjectIn,
     ProjectsApi,
@@ -88,7 +86,6 @@ class RemoteBackend(BaseBackend):
     ) -> int:
         """Call the necessary methods in the correct order, with the correct parameters."""
         async with ApiClient(self._configuration) as api_client:
-            await self._set_team_member_id(api_client)
             project = await self._create_project(api_client, program)
             algorithm = await self._create_algorithm(api_client, program, project)
             commit = await self._create_commit(api_client, algorithm)
@@ -97,31 +94,6 @@ class RemoteBackend(BaseBackend):
             job: Job = await self._create_job(api_client, file, batch_job, number_of_shots=number_of_shots)
             await self._enqueue_batch_job(api_client, batch_job)
             return job.id  # type: ignore
-
-    async def _set_team_member_id(self, api_client: ApiClient) -> None:
-        api_instance = MembersApi(api_client)
-        members = await api_instance.read_members_members_get()
-        if len(members) == 1:
-            member_id = members[0].id
-            typer.echo(f"Using member ID {member_id}")
-            self.auth_settings.owner_id = member_id
-            return
-
-        typer.echo("Choose a member ID from the list for project configuration.")
-        json_string = "[" + ",".join(member.model_dump_json(indent=4) for member in members) + "]"
-        typer.echo(json_string)
-
-        member_ids = [member.id for member in members]
-
-        while True:
-            try:
-                member_id = int(input("Please enter one of the given ids: "))
-                if member_id not in member_ids:
-                    raise ValueError
-                self.auth_settings.owner_id = member_id
-                return
-            except ValueError:
-                typer.echo("Invalid input. Please enter a valid id or CTRL + C to cancel.")
 
     async def _create_project(self, api_client: ApiClient, program: BaseAlgorithm) -> Project:
         api_instance = ProjectsApi(api_client)
