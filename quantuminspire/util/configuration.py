@@ -7,7 +7,7 @@ import json
 import time
 from os import PathLike
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple, Type
+from typing import cast, Any, Dict, Optional, Tuple, Type
 
 import typer
 from compute_api_client import ApiClient, Configuration, MembersApi
@@ -113,7 +113,7 @@ async def _fetch_team_member_id(host: str, access_token: str) -> int:
         if len(members) == 1:
             member_id = members[0].id
             typer.echo(f"Using member ID {member_id}")
-            return member_id
+            return cast(int, member_id)
 
         typer.echo("Choose a member ID from the list for project configuration.")
         json_string = "[" + ",".join(member.model_dump_json(indent=4) for member in members) + "]"
@@ -127,7 +127,7 @@ async def _fetch_team_member_id(host: str, access_token: str) -> int:
                 if member_id not in member_ids:
                     raise ValueError
                 typer.echo(f"Using member ID {member_id}")
-                return member_id
+                return cast(int, member_id)
             except ValueError:
                 typer.echo("Invalid input. Please enter a valid id or CTRL + C to cancel.")
 
