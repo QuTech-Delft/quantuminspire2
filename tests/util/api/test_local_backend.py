@@ -53,7 +53,7 @@ def test_local_backend_run_quantum(qxelarator: Mock) -> None:
 
 def test_local_backend_run_hybrid(qxelarator: Mock, quantum_interface: Mock) -> None:
     backend = LocalBackend(qxelarator)
-    file = Path("examples/hqca_circuit_v3.py")
+    file = Path("examples/hqca_circuit.py")
     algorithm = HybridAlgorithm("test", "Test")
     algorithm.read_file(file)
     backend.run_hybrid(algorithm, quantum_interface)
