@@ -3,14 +3,14 @@ from typing import Any, Dict, List
 
 from opensquirrel.squirrel_ir import Qubit
 
-from quantuminspire.sdk.models.circuit import CircuitV3
+from quantuminspire.sdk.models.circuit import Circuit
 from quantuminspire.sdk.models.hybrid_algorithm import HybridAlgorithm
 from quantuminspire.util.api.local_backend import LocalBackend
 from quantuminspire.util.api.quantum_interface import QuantumInterface
 
 
 def generate_circuit() -> str:
-    with CircuitV3(platform_name="spin-2", program_name="prgm1", number_of_qubits=2) as circuit:
+    with Circuit(platform_name="spin-2", program_name="prgm1", number_of_qubits=2) as circuit:
         circuit.ir.H(Qubit(0))
         circuit.ir.CNOT(Qubit(0), Qubit(1))
 

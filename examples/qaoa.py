@@ -12,7 +12,7 @@ from networkx import Graph
 from opensquirrel.squirrel_ir import Float, Qubit
 from scipy.optimize import Bounds, minimize
 
-from quantuminspire.sdk.models.circuit import CircuitV3
+from quantuminspire.sdk.models.circuit import Circuit
 
 MATRIX = np.matrix([[0, 1], [1, 0]])
 GRAPH = nx.from_numpy_array(MATRIX)
@@ -74,7 +74,7 @@ def qaoa_circuit(graph: Graph, beta: np.ndarray, gamma: np.ndarray) -> str:
     Returns:
         cQASM string representing the quantum circuit used to compute the energies in the QAOA algorithm.
     """
-    with CircuitV3(platform_name="spin-2", program_name="qaoa", number_of_qubits=graph.number_of_nodes()) as circuit:
+    with Circuit(platform_name="spin-2", program_name="qaoa", number_of_qubits=graph.number_of_nodes()) as circuit:
         for i in graph.nodes:
             circuit.ir.H(Qubit(i))
 
