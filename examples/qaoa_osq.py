@@ -13,8 +13,6 @@ from opensquirrel import CircuitBuilder
 from opensquirrel.squirrel_ir import Float, Qubit
 from scipy.optimize import Bounds, minimize
 
-from quantuminspire.sdk.models.circuit_v3 import CircuitV3
-
 MATRIX = np.matrix([[0, 1], [1, 0]])
 GRAPH = nx.from_numpy_array(MATRIX)
 positions = nx.circular_layout(GRAPH)
@@ -79,7 +77,7 @@ def qaoa_circuit(graph: Graph, beta: np.ndarray, gamma: np.ndarray) -> str:
 
     circuit = CircuitBuilder(number_of_qubits=n_qubits)
     for q in range(0, n_qubits):
-        #circuit.z(Qubit(q))
+        # circuit.z(Qubit(q))
         circuit.H(Qubit(q))
 
     for i in range(P):

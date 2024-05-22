@@ -119,11 +119,7 @@ class QuantumInspireBackend(Backend):  # type: ignore
     )
     qobj_warning_issued = False
 
-    def __init__(
-        self,
-        qi: QuantumInterface,
-        configuration: Optional[QasmBackendConfiguration] = None
-    ) -> None:
+    def __init__(self, qi: QuantumInterface, configuration: Optional[QasmBackendConfiguration] = None) -> None:
 
         super().__init__(configuration=(configuration or QuantumInspireBackend.DEFAULT_CONFIGURATION), provider=None)
         self.__qi: QuantumInterface = qi

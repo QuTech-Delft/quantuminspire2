@@ -2,9 +2,9 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from opensquirrel import CircuitBuilder
-from opensquirrel.squirrel_ir import Qubit,Float
+from opensquirrel.squirrel_ir import Qubit
 
-#from quantuminspire.sdk.models.circuit_v3 import CircuitV3
+# from quantuminspire.sdk.models.circuit_v3 import CircuitV3
 from quantuminspire.sdk.models.hybrid_algorithm import HybridAlgorithm
 from quantuminspire.util.api.local_backend import LocalBackend
 from quantuminspire.util.api.quantum_interface import QuantumInterface
@@ -18,6 +18,7 @@ def generate_circuit() -> str:
     circuit.CNOT(Qubit(0), Qubit(1))
 
     return str(circuit.to_circuit())
+
 
 def execute(qi: QuantumInterface) -> None:
     """Run the classical part of the Hybrid Quantum/Classical Algorithm.
