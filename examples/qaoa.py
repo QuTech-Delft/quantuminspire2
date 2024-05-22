@@ -12,7 +12,7 @@ from networkx import Graph
 from opensquirrel.squirrel_ir import Float, Qubit
 from scipy.optimize import Bounds, minimize
 
-from quantuminspire.sdk.models.circuit_v3 import CircuitV3
+from quantuminspire.sdk.models.circuit import CircuitV3
 
 MATRIX = np.matrix([[0, 1], [1, 0]])
 GRAPH = nx.from_numpy_array(MATRIX)

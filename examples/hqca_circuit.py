@@ -3,7 +3,7 @@ from typing import Any, Dict, List
 
 from opensquirrel.squirrel_ir import Qubit
 
-from quantuminspire.sdk.models.circuit_v3 import CircuitV3
+from quantuminspire.sdk.models.circuit import CircuitV3
 from quantuminspire.sdk.models.hybrid_algorithm import HybridAlgorithm
 from quantuminspire.util.api.local_backend import LocalBackend
 from quantuminspire.util.api.quantum_interface import QuantumInterface
