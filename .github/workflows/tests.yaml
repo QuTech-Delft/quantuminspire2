@@ -33,6 +33,7 @@ jobs:
         os:
           - ubuntu-latest
           - macos-13 # runs x64
+          - macos-latest # runs arm64
           - windows-latest
         python-version:
           - "3.9"
