@@ -4,7 +4,7 @@ from types import TracebackType
 from typing import Optional, Type
 
 from compute_api_client import AlgorithmType, CompileStage
-from opensquirrel import CircuitBuilder
+from open_squirrel import CircuitBuilder
 
 from quantuminspire.sdk.models.base_algorithm import BaseAlgorithm
 
