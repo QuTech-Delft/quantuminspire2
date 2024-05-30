@@ -924,7 +924,7 @@ signals = ["blinker (>=1.4.0)"]
 signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
 
 [[package]]
-name = "open-squirrel"
+name = "opensquirrel"
 version = "0.0.5"
 description = "A quantum circuit transformation and manipulation tool"
 optional = false
@@ -942,7 +942,7 @@ numpy = {version = "^1.26", markers = "python_version >= \"3.9\" and python_vers
 type = "git"
 url = "https://github.com/QuTech-Delft/OpenSquirrel.git"
 reference = "develop"
-resolved_reference = "2f7db46e505edb6f9c3d745f59d1f247be80afe7"
+resolved_reference = "4fb58d2aed96e0e13bf6653ad3bd38ea2b82b781"
 
 [[package]]
 name = "packaging"
@@ -1912,4 +1912,4 @@ local = ["qxelarator"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "10694747da47b08fdefbc665bee0e64809b215ff86e425babc2576eef87c68dd"
+content-hash = "ffdb32c37415cb552b03fdd281aa69c749283d7950c65187fce7523764b3d7a7"
