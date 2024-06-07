@@ -30,8 +30,14 @@ pydantic-settings = "^2.3.1"
 qiskit = "^1.1.0"
 oauthlib = "^3.2.2"
 requests = "^2.32.3"
-opensquirrel = {git = "https://github.com/QuTech-Delft/OpenSquirrel.git", rev = "82498f268682deac89add8a11b93b27079c46e6d"}
+opensquirrel = {version= "0.0.5", source="testpypi"}
+libqasm = {version= "0.6.7", source="testpypi"}
 
+
+# Secondary source (Test PyPI)
+[[tool.poetry.source]]
+name = "testpypi"
+url = "https://test.pypi.org/simple"
 
 [tool.poetry.extras]
 local = ["qxelarator"]

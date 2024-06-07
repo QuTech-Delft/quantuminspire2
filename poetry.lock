@@ -162,6 +162,11 @@ tests = ["attrs[tests-no-zope]", "zope-interface"]
 tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
 tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist[psutil]"]
 
+[package.source]
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "testpypi"
+
 [[package]]
 name = "black"
 version = "24.4.2"
@@ -332,6 +337,11 @@ files = [
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
+[package.source]
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "testpypi"
+
 [[package]]
 name = "colorama"
 version = "0.4.6"
@@ -342,6 +352,11 @@ files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "testpypi"
 
 [[package]]
 name = "coverage"
@@ -424,6 +439,11 @@ files = [
 [package.extras]
 graph = ["objgraph (>=1.7.2)"]
 profile = ["gprof2dot (>=2022.7.29)"]
+
+[package.source]
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "testpypi"
 
 [[package]]
 name = "docformatter"
@@ -579,42 +599,28 @@ files = [
     {file = "iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "testpypi"
+
 [[package]]
 name = "libqasm"
-version = "0.6.6"
+version = "0.6.7"
 description = "libqasm Python Package"
 optional = false
 python-versions = "*"
 files = [
-    {file = "libqasm-0.6.6-cp310-cp310-macosx_11_0_universal2.whl", hash = "sha256:5f7e0bf4a5086d24b23f62462ab5fa2c78358d2f0bc89f7440b66a11511ec908"},
-    {file = "libqasm-0.6.6-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:3febe56ab802da4d7ba2c98ad13915d16b7abf1c931dc86cb32f60504d86ef10"},
-    {file = "libqasm-0.6.6-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:ad2075cca3f67fd3df5af75038d74f2f2b09f6abd77db2097caf6002475806b7"},
-    {file = "libqasm-0.6.6-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:ce85489d7b2037034a5290038df1f1f98fea7cf63f02bd85e32315b933e6ed2a"},
-    {file = "libqasm-0.6.6-cp310-cp310-win_amd64.whl", hash = "sha256:333519170c3b0928bf0268c72ccd35ed31b23e95fda1771863c6f09cecae967a"},
-    {file = "libqasm-0.6.6-cp311-cp311-macosx_10_10_universal2.whl", hash = "sha256:fa3a1f6963d549c56bdd2835cdaa0c32ea2d98e53071a297d4d98982190b4894"},
-    {file = "libqasm-0.6.6-cp311-cp311-macosx_11_0_universal2.whl", hash = "sha256:44309ed847730890a2753f03e58fea26e7d51cf6d8db96f147bddcd41fae2648"},
-    {file = "libqasm-0.6.6-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:5f7f959a482dc74912f7e6fd45878f7f7b5dafeb66e87098cb3d9470b0f97cde"},
-    {file = "libqasm-0.6.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:30c917e10847385d6c01981723f96b3c39882e99b44e2e6d38c525f492c321fa"},
-    {file = "libqasm-0.6.6-cp311-cp311-win_amd64.whl", hash = "sha256:59ceda3d21abfd53a712837d9d502fd53566effe095aaa390c29d4765b70688f"},
-    {file = "libqasm-0.6.6-cp312-cp312-macosx_10_10_universal2.whl", hash = "sha256:7e217987fbec408094a4556f9f79f1fc03919a249b1005c216f02990e32289ba"},
-    {file = "libqasm-0.6.6-cp312-cp312-macosx_11_0_universal2.whl", hash = "sha256:39a65c8b91b3ec8d6d9986d7c20975653a1cfd3031a05b0032f75a5fde073c29"},
-    {file = "libqasm-0.6.6-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:f7c6c58ce4f55559cabdb41b0c808d52009d394af5a63a43e6deea7c43a18cde"},
-    {file = "libqasm-0.6.6-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:3edbd092668662bab54d39632c5fb7ce8eee952343561ca43afaa1fd2ad67b1a"},
-    {file = "libqasm-0.6.6-cp312-cp312-win_amd64.whl", hash = "sha256:f6a1a15a982a04e9e2f4eac54efa56cef451295ecbd6d2136bbace7fe06fd900"},
-    {file = "libqasm-0.6.6-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:1eae1f527a8027454e3cd32e4b358238ce8d082d93ed5dd4b7b2e426593b8bd8"},
-    {file = "libqasm-0.6.6-cp38-cp38-macosx_11_0_x86_64.whl", hash = "sha256:649e2bdf490fc2153c406f008ca0cc937013280a2c29fdc297ddbdcfd5f0d23b"},
-    {file = "libqasm-0.6.6-cp38-cp38-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:231339d32b30142af8f01190ab1f587f9f2b3f1ea70953868e5a5009b5045d01"},
-    {file = "libqasm-0.6.6-cp38-cp38-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:6d00cc65e29dbadec3b8e464d9e6078726cec11401d504b7abc1b5798b785db2"},
-    {file = "libqasm-0.6.6-cp38-cp38-win_amd64.whl", hash = "sha256:1c311672f7fd8d048ee2cd2bb0d43a2e86a78613d5951afc3ec26f74b1850f09"},
-    {file = "libqasm-0.6.6-cp39-cp39-macosx_11_0_universal2.whl", hash = "sha256:4a61e271bbb0e6d26f3782555f405bb83323c2501fdd2b77b0760392ef3e0540"},
-    {file = "libqasm-0.6.6-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:213e0b029f6b277a3068a9864c13653a782caf9ce1bb2b648b2ad7bae866a6ff"},
-    {file = "libqasm-0.6.6-cp39-cp39-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:0700e0c971ae8da045696300588ef2d56a3c8aa39140a44e344630a2e8ba030e"},
-    {file = "libqasm-0.6.6-cp39-cp39-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:026d1ef42567294557ba55fd7db7a6f9b7d5f434c96906b37f4e33e09f2feb0c"},
-    {file = "libqasm-0.6.6-cp39-cp39-win_amd64.whl", hash = "sha256:2e3aaf3471be7d10332a3dd4f7e84e074aebaa040c8d6996a156ecc50e4cf430"},
+    {file = "libqasm-0.6.7-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:a799e6d7f6b72960cf1cb89e7763c00751c079414d4ce145af5cf2d809af94e6"},
 ]
 
 [package.dependencies]
 numpy = "*"
+
+[package.source]
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "testpypi"
 
 [[package]]
 name = "markdown-it-py"
@@ -928,21 +934,21 @@ name = "opensquirrel"
 version = "0.0.5"
 description = "A quantum circuit transformation and manipulation tool"
 optional = false
-python-versions = "^3.8"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "opensquirrel-0.0.5-py3-none-any.whl", hash = "sha256:9f6765f27ac29ef3b74497101b005bb65c9761b8d5c745f4db8f5a362ec32f6c"},
+]
 
 [package.dependencies]
-antlr4-python3-runtime = "^4.13.1"
-libqasm = "0.6.6"
-networkx = "^3.0.0"
-numpy = {version = "^1.26", markers = "python_version >= \"3.9\" and python_version < \"4.0\""}
+antlr4-python3-runtime = ">=4.13.1,<5.0.0"
+libqasm = ">=0.6.6"
+networkx = ">=3.0.0,<4.0.0"
+numpy = {version = ">=1.26,<2.0", markers = "python_version >= \"3.9\" and python_version < \"4.0\""}
 
 [package.source]
-type = "git"
-url = "https://github.com/QuTech-Delft/OpenSquirrel.git"
-reference = "82498f268682deac89add8a11b93b27079c46e6d"
-resolved_reference = "82498f268682deac89add8a11b93b27079c46e6d"
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "testpypi"
 
 [[package]]
 name = "packaging"
@@ -1151,6 +1157,11 @@ files = [
 [package.extras]
 windows-terminal = ["colorama (>=0.4.6)"]
 
+[package.source]
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "testpypi"
+
 [[package]]
 name = "pytest"
 version = "8.2.2"
@@ -1233,12 +1244,17 @@ description = "Extensions to the standard Python datetime module"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 files = [
-    {file = "python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"},
-    {file = "python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"},
+    {file = "python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:bd97822216698b73ffd6f696afc8a552193015de34cb73614499e4f54197853d"},
+    {file = "python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:428f8264f7dc25913fb0a9cdf3564f3f3626ec21b41bcdc74c5a6f4762af5227"},
 ]
 
 [package.dependencies]
 six = ">=1.5"
+
+[package.source]
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "testpypi"
 
 [[package]]
 name = "python-dotenv"
@@ -1917,4 +1933,4 @@ local = ["qxelarator"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "8cbb65087701d9606fbbe93dc6564f98db0e30acedcf11ac6157c0b17b8ec718"
+content-hash = "35de1cbd3a09f593b20b70a22312c01d1eef4e84e48ca542168190051a56ccb4"
