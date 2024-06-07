@@ -9,7 +9,7 @@ on:
 jobs:
   lint:
     name: Static analysis
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
