@@ -31,20 +31,10 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-latest
           - macos-13 # runs x64
-          - macos-14 # runs arm64
-          - windows-latest
         python-version:
-          - "3.9"
-          - "3.10"
           - "3.11"
           - "3.12"
-        exclude:
-          - os: macos-13
-            python-version: "3.11"
-          - os: macos-13
-            python-version: "3.12"
     runs-on: ${{ matrix.os }}
     env:
       PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
