@@ -41,13 +41,28 @@ def calculate_H0(backend: QuantumInspireBackend, distance: float = 0.735) -> _Gr
     mapper = ParityMapper(num_particles=(1, 1))
     qubit_op = mapper.map(fermionic_op)
 
+    from qiskit.quantum_info import Pauli
+    qubit_op = Pauli("X")
+
     estimator = BackendEstimator(backend=backend)
     initial_state = HartreeFock(n_spatial_orbitals, n_particles, mapper)
     ansatz = UCCSD(n_spatial_orbitals, n_particles, mapper, initial_state=initial_state)
+
+    from qiskit import QuantumCircuit
+    from qiskit.circuit import Parameter
+    params = [Parameter("t_0"), Parameter("t_1")]
+
+    ansatz = QuantumCircuit(1)
+    ansatz.ry(params[0], qubit=0)
+    ansatz.rz(params[1], qubit=0)
+
     optimizer = COBYLA(maxiter=1)
 
     algo = VQE(estimator, ansatz, optimizer)
     result = algo.compute_minimum_eigenvalue(qubit_op)
+
+    breakpoint()
+    result.optimal_parameters
 
     # print(f"{distance=}: nuclear_repulsion_energy={nuclear_repulsion_energy:.2f}, eigenvalue={result.eigenvalue:.2f}")
     return _GroundStateEnergyResults(result, nuclear_repulsion_energy)
