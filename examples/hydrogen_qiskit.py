@@ -86,10 +86,11 @@ if __name__ == "__main__":
     print("=== Execute ===\n", results)
 
     # plot total energy vs distance between atoms
-    for y_name in ["total_energy"]:
-        distances, energies = [[result[key] for result in results] for key in ["distance", y_name]]
-        plt.plot(distances, energies, label=y_name)
-    plt.legend()
+    distances, energies = [[result[key] for result in results] for key in ["distance", "total_energy"]]
+    plt.plot(distances, energies)
+    plt.xlabel("Distance (Angstrom)")
+    plt.ylabel("Total energy (a.u.)")
+
     plt.show()
 
     # draw optimal circuit of first distance as text
