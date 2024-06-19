@@ -122,7 +122,7 @@ def U(circuit_ir, q: Qubit, theta: float, phi: float, lamb: float):
 
 def generate_ansatz(params):
     with Circuit(platform_name="spin-2", program_name="prgm1", number_of_qubits=2) as circuit:
-        U(circuit.ir, Qubit(0), *tuple(params[0:3]))
+        U(circuit.ir, Qubit(0), *params[0:3])
         U(circuit.ir, Qubit(1), *params[3:6])
         circuit.ir.CZ(Qubit(0), Qubit(1))
         U(circuit.ir, Qubit(0), *params[6:9])
