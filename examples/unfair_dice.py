@@ -4,7 +4,7 @@ from quantuminspire.sdk.models.circuit import Circuit
 from quantuminspire.util.api.quantum_interface import QuantumInterface
 from qiskit_algorithms.optimizers import COBYLA, SPSA
 from qiskit.circuit import Parameter
-from opensquirrel.ir import Qubit, Measure
+from opensquirrel.ir import Qubit, Measure, Float
 import numpy as np
 
 number_of_qubits = 2
@@ -75,14 +75,31 @@ class AverageDecreaseTermination:
                 return True
         return False
 
-def generate_ansatz(params):
+def U(circuit_ir, q: Qubit, theta: float, phi: float, lamb: float):
+    '''
+        McKay decomposition of the U gate
 
+    :param self: circuit object
+    :param q: qubit
+    :param theta: angle
+    :param phi: angle
+    :param lamb: angle
+    :return: circuit object
+    '''
+    circuit_ir.Rz(q, Float(phi))
+    circuit_ir.Rx(q, Float(-np.pi/2))
+    circuit_ir.Rz(q, Float(theta))
+    circuit_ir.Rx(q, Float(np.pi / 2))
+    circuit_ir.Rz(q, Float(lamb))
+    return circuit_ir
+
+def generate_ansatz(params):
     with Circuit(platform_name="spin-2", program_name="prgm1", number_of_qubits=2) as circuit:
-        circuit.ir.H(Qubit(0))  #U
-        circuit.ir.H(Qubit(1))  #U
+        U(circuit.ir, Qubit(0), *tuple(params[0:3]))
+        U(circuit.ir, Qubit(1), *params[3:6])
         circuit.ir.CZ(Qubit(0), Qubit(1))
-        circuit.ir.H(Qubit(0))  #U
-        circuit.ir.H(Qubit(1))  #U
+        U(circuit.ir, Qubit(0), *params[6:9])
+        U(circuit.ir, Qubit(1), *params[9:12])
         for ii in range(number_of_qubits):
             Measure(ii, ii)
 
