@@ -8,7 +8,16 @@ from opensquirrel.ir import Qubit, Measure
 import numpy as np
 
 number_of_qubits = 2
-number_of_parameters = 1
+
+
+def counts_to_distr(counts) -> dict[int, float]:
+    """Convert Qiskit result counts to a dictionary
+
+    The dictionary has integers as keys, and pseudo-probabilities as values.
+    """
+    n_shots = sum(counts.values())
+    output_distr = {int(k, 2): v / n_shots for k, v in counts.items()}
+    return {k: output_distr[k] for k in sorted(output_distr)}
 
 
 class AverageDecreaseTermination:
@@ -78,17 +87,6 @@ def generate_ansatz(params):
             Measure(ii, ii)
 
     return circuit
-    '''
-    qc = QuantumCircuit(number_of_qubits, number_of_qubits)
-    qc.u(*params[0:3], 0)
-    qc.u(*params[3:6], 1)
-    qc.cz(0, 1)
-    qc.u(*params[6:9], 0)
-    qc.u(*params[9:12], 1)
-    for ii in range(number_of_qubits):
-        qc.measure(ii, ii)
-    return qc
-    '''
 
 
 def objective_function(params, qi,
@@ -97,22 +95,16 @@ def objective_function(params, qi,
     parameters `params` to the target distribution."""
     qc = generate_ansatz(params)
 
-    result = qi.execute_circuit(qc, nshots).result()
+    execute_result = qi.execute_circuit(qc.content, nshots)
     # Convert the result to a dictionary with probabilities
-    output_distr = counts_to_distr(result.get_counts())
+    output_distr = counts_to_distr(execute_result.results)
     # Calculate the cost as the distance between the output
     # distribution and the target distribution
     cost = sum(
         abs(target_distribution.get(i, 0) - output_distr.get(i, 0))
-        for i in range(2 ** qc.num_qubits)
+        for i in range(2 ** number_of_qubits)
     )
     return cost
-
-
-
-#F = partial(
-#    objective_function, target_distribution=target_distribution, backend=backend, nshots=2400
-#)
 
 
 def data_callback(iteration: int, parameters: Any, residual: float) -> None:
@@ -124,33 +116,31 @@ def data_callback(iteration: int, parameters: Any, residual: float) -> None:
         residual: Current residual (value of the objective function)
 
     """
+    # do nothing for now
     pass
 
 
 def qiskit_callback(number_evaluations, parameters, value, stepsize, accepted):
-    """Callback method for Qiskit optimizers"""
-    #if self.show_progress:
-    print(f"#{number_evaluations}, {parameters}, {value}, {stepsize}, {accepted}")
     data_callback(number_evaluations, parameters, value)
 
 def execute(qi: QuantumInterface) -> None:
-    qc = generate_ansatz([Parameter(f"s_{i}") for i in range(number_of_parameters)])
-
-    initial_parameters = .85 * np.random.rand(number_of_parameters, )
 
     optimizer = SPSA(maxiter=500, callback=qiskit_callback,
                      termination_checker=AverageDecreaseTermination(N=35))
+
+    m = 2 ** number_of_qubits
+    p0 = np.random.random(m) + 0.2
+    p0 = p0 / np.sum(p0)
+    target_distribution = {k: p0[k] for k in range(m)}
+    F = partial(
+        objective_function, qi=qi, target_distribution=target_distribution, nshots=2400
+    )
+
+    number_of_parameters = 12
+    initial_parameters = .85 * np.random.rand(number_of_parameters, )
     result = optimizer.minimize(fun=F, x0=initial_parameters)
 
-
-
-    result = qi.execute_circuit(circuit, 4000)
-
-    counts = execute_circuits(list(range(1, qc.num_qubits + 1)), [qc], number_of_shots=4_000, save_data=False,
-                              name='objective_function')[0]
-
-    backend.run(qc, shots=10000).result().get_counts()
-
+    return result
 
 
 def finalize(list_of_measurements: Dict[int, List[Any]]) -> Dict[str, Any]:
@@ -162,6 +152,7 @@ if __name__ == "__main__":
     target_distribution = {0: p, 1: 1 - p}
 
     # Run the individual steps for debugging
+    number_of_parameters = 12
     qc = generate_ansatz([Parameter(f"s_{i}") for i in range(number_of_parameters)])
     initial_parameters = .85 * np.random.rand(number_of_parameters, )
     print(qc.content)
