@@ -128,16 +128,17 @@ def generate_ansatz(params):
         U(circuit.ir, Qubit(0), *params[6:9])
         U(circuit.ir, Qubit(1), *params[9:12])
         for ii in range(number_of_qubits):
-            Measure(ii, ii)
+            circuit.ir.measure(Qubit(ii))
 
     return circuit
 
-
 def objective_function(params, qi,
                        target_distribution, nshots=None):
+
     """Compares the output distribution of our circuit with
     parameters `params` to the target distribution."""
     qc = generate_ansatz(params)
+    print(f'{qc.content}')
 
     execute_result = qi.execute_circuit(qc.content, nshots)
     # Convert the result to a dictionary with probabilities
@@ -165,6 +166,7 @@ def data_callback(iteration: int, parameters: Any, residual: float) -> None:
 
 
 def qiskit_callback(number_evaluations, parameters, value, stepsize, accepted):
+    print(f'I see evaluation: {number_evaluations} -> {value}')
     data_callback(number_evaluations, parameters, value)
 
 def execute(qi: QuantumInterface) -> None:
