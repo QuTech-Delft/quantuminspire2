@@ -16,7 +16,7 @@ class Circuit(BaseAlgorithm):
     """
 
     def __init__(
-        self, platform_name: str, program_name: str, number_of_qubits: int, bit_registers: int | None = None
+        self, platform_name: str, program_name: str, number_of_qubits: int, bit_registers: Optional[int] = None
     ) -> None:
         super().__init__(platform_name, program_name)
         self._number_of_qubits = number_of_qubits
