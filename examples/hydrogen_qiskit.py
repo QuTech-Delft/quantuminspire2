@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import matplotlib.pyplot as plt
 import numpy as np
 from qiskit import transpile
 from qiskit.primitives import BackendEstimator
@@ -54,7 +53,7 @@ def calculate_H0(backend: QuantumInspireBackend, distance: float = 0.735) -> _Gr
 
 
 def execute(qi: QuantumInterface) -> None:
-    distances = np.arange(0.3, 2.5, 0.1)
+    distances = np.arange(0.3, 0.5, 0.1)
     results = []
     for distance in distances:
         ground_state_energy_results = calculate_H0(backend=QuantumInspireBackend(qi), distance=distance)
@@ -86,12 +85,13 @@ if __name__ == "__main__":
     print("=== Execute ===\n", results)
 
     # plot total energy vs distance between atoms
-    distances, energies = [[result[key] for result in results] for key in ["distance", "total_energy"]]
-    plt.plot(distances, energies)
-    plt.xlabel("Distance (Angstrom)")
-    plt.ylabel("Total energy (a.u.)")
-
-    plt.show()
+    # import matplotlib.pyplot as plt
+    # distances, energies = [[result[key] for result in results] for key in ["distance", "total_energy"]]
+    # plt.plot(distances, energies)
+    # plt.xlabel("Distance (Angstrom)")
+    # plt.ylabel("Total energy (a.u.)")
+    #
+    # plt.show()
 
     # draw optimal circuit of first distance as text
     circuit = transpile(results[0]["result"].optimal_circuit, basis_gates=['ry', 'h', 'cx', 'x', 'sdg', 'rz', 's'])
