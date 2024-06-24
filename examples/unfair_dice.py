@@ -31,7 +31,7 @@ from quantuminspire.sdk.models.circuit import Circuit
 from quantuminspire.util.api.quantum_interface import QuantumInterface
 from qiskit_algorithms.optimizers import COBYLA, SPSA
 from qiskit.circuit import Parameter
-from opensquirrel.ir import Qubit, Measure, Float
+from opensquirrel.ir import Qubit, Measure, Float, Bit
 import numpy as np
 
 number_of_qubits = 2
@@ -121,14 +121,15 @@ def U(circuit_ir, q: Qubit, theta: float, phi: float, lamb: float):
     return circuit_ir
 
 def generate_ansatz(params):
-    with Circuit(platform_name="spin-2", program_name="prgm1", number_of_qubits=2) as circuit:
+    with Circuit(platform_name="spin-2", program_name="prgm1",
+                 number_of_qubits=2) as circuit:
         U(circuit.ir, Qubit(0), *params[0:3])
         U(circuit.ir, Qubit(1), *params[3:6])
         circuit.ir.CZ(Qubit(0), Qubit(1))
         U(circuit.ir, Qubit(0), *params[6:9])
         U(circuit.ir, Qubit(1), *params[9:12])
         for ii in range(number_of_qubits):
-            circuit.ir.measure(Qubit(ii))
+            circuit.ir.measure(Bit(ii), Qubit(ii))
 
     return circuit
 
@@ -138,8 +139,6 @@ def objective_function(params, qi,
     """Compares the output distribution of our circuit with
     parameters `params` to the target distribution."""
     qc = generate_ansatz(params)
-    print(f'{qc.content}')
-
     execute_result = qi.execute_circuit(qc.content, nshots)
     # Convert the result to a dictionary with probabilities
     output_distr = counts_to_distr(execute_result.results)
@@ -166,12 +165,11 @@ def data_callback(iteration: int, parameters: Any, residual: float) -> None:
 
 
 def qiskit_callback(number_evaluations, parameters, value, stepsize, accepted):
-    print(f'I see evaluation: {number_evaluations} -> {value}')
     data_callback(number_evaluations, parameters, value)
 
 def execute(qi: QuantumInterface) -> None:
 
-    optimizer = SPSA(maxiter=500, callback=qiskit_callback,
+    optimizer = SPSA(maxiter=3, callback=qiskit_callback,
                      termination_checker=AverageDecreaseTermination(N=35))
 
     m = 2 ** number_of_qubits
@@ -179,7 +177,7 @@ def execute(qi: QuantumInterface) -> None:
     p0 = p0 / np.sum(p0)
     target_distribution = {k: p0[k] for k in range(m)}
     F = partial(
-        objective_function, qi=qi, target_distribution=target_distribution, nshots=2400
+        objective_function, qi=qi, target_distribution=target_distribution, nshots=10
     )
 
     number_of_parameters = 12
