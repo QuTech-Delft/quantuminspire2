@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Any, Dict, List
 
-from opensquirrel.ir import Qubit, Bit
+from opensquirrel.ir import Bit, Qubit
 
 from quantuminspire.sdk.models.circuit import Circuit
 from quantuminspire.sdk.models.hybrid_algorithm import HybridAlgorithm
