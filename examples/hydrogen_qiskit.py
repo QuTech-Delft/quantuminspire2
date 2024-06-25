@@ -57,7 +57,7 @@ def execute(qi: QuantumInterface) -> None:
     results = []
     for distance in distances:
         ground_state_energy_results = calculate_H0(backend=QuantumInspireBackend(qi), distance=distance)
-        result = dataclasses.asdict(ground_state_energy_results)
+        result = {}
         result["total_energy"] = ground_state_energy_results.nuclear_repulsion_energy + ground_state_energy_results.result.eigenvalue
         result["distance"] = distance
         results.append(result)
@@ -92,9 +92,3 @@ if __name__ == "__main__":
     # plt.ylabel("Total energy (a.u.)")
     #
     # plt.show()
-
-    # draw optimal circuit of first distance as text
-    circuit = transpile(results[0]["result"].optimal_circuit, basis_gates=['ry', 'h', 'cx', 'x', 'sdg', 'rz', 's'])
-    print(circuit.draw("text"))
-
-
