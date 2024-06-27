@@ -129,7 +129,7 @@ def generate_ansatz(params):
         U(circuit.ir, Qubit(0), *params[6:9])
         U(circuit.ir, Qubit(1), *params[9:12])
         for ii in range(number_of_qubits):
-            circuit.ir.measure(Bit(ii), Qubit(ii))
+            circuit.ir.measure(Qubit(ii), Bit(ii))
 
     return circuit
 
