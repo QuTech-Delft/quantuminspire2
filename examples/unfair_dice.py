@@ -102,6 +102,9 @@ class AverageDecreaseTermination:
                 return True
         return False
 
+
+dt = AverageDecreaseTermination(N=35)
+
 def U(circuit_ir, q: Qubit, theta: float, phi: float, lamb: float):
     '''
         McKay decomposition of the U gate
@@ -168,16 +171,14 @@ def qiskit_callback(number_evaluations, parameters, value, stepsize, accepted):
     data_callback(number_evaluations, parameters, value)
 
 def execute(qi: QuantumInterface) -> None:
-
-    optimizer = SPSA(maxiter=3, callback=qiskit_callback,
-                     termination_checker=AverageDecreaseTermination(N=35))
+    optimizer = SPSA(maxiter=100, callback=qiskit_callback, termination_checker=dt)
 
     m = 2 ** number_of_qubits
     p0 = np.random.random(m) + 0.2
     p0 = p0 / np.sum(p0)
     target_distribution = {k: p0[k] for k in range(m)}
     F = partial(
-        objective_function, qi=qi, target_distribution=target_distribution, nshots=10
+        objective_function, qi=qi, target_distribution=target_distribution, nshots=2000
     )
 
     number_of_parameters = 12
@@ -188,26 +189,20 @@ def execute(qi: QuantumInterface) -> None:
 
 
 def finalize(list_of_measurements: Dict[int, List[Any]]) -> Dict[str, Any]:
-    return {"measurements": list_of_measurements}
+    total_counts = {}
+    for m in list_of_measurements:
+        counts = counts_to_distr(m)
+        for k in counts:
+            if k in total_counts:
+                total_counts[k] += counts[k]
+            else:
+                total_counts[k] = counts[k]
+
+    total_counts = {k: total_counts[k]/len(list_of_measurements) for k in total_counts}
+
+    return {"avg_decrease": dt.values,
+            "counts": total_counts}
 
 
 if __name__ == "__main__":
-    p = 0.5 + 0.25 * np.random.random()
-    target_distribution = {0: p, 1: 1 - p}
-
-    # Run the individual steps for debugging
-    number_of_parameters = 12
-    qc = generate_ansatz([Parameter(f"s_{i}") for i in range(number_of_parameters)])
-    initial_parameters = .85 * np.random.rand(number_of_parameters, )
-    print(qc.content)
-    print(initial_parameters)
-
-    optimizer = SPSA(maxiter=500, callback=qiskit_callback,
-                     termination_checker=AverageDecreaseTermination(N=35))
-
-    F = partial(
-        objective_function, qi=None, target_distribution=target_distribution, nshots=2400
-    )
-
-    result = optimizer.minimize(fun=F, x0=initial_parameters)
-    print(optimizer)
+    pass
