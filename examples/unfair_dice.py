@@ -28,13 +28,17 @@ SOFTWARE.
 from typing import Any, Dict, List
 from functools import partial
 from quantuminspire.sdk.models.circuit import Circuit
-from quantuminspire.util.api.quantum_interface import QuantumInterface
+from quantuminspire.util.api.quantum_interface import QuantumInterface, ExecuteCircuitResult
 from qiskit_algorithms.optimizers import COBYLA, SPSA
 from qiskit.circuit import Parameter
 from opensquirrel.ir import Qubit, Measure, Float, Bit
 import numpy as np
 
 number_of_qubits = 2
+m = 2 ** number_of_qubits
+p0 = np.random.random(m) + 0.2
+p0 = p0 / np.sum(p0)
+target_distribution = {k: p0[k] for k in range(m)}
 
 
 def counts_to_distr(counts) -> dict[int, float]:
@@ -173,10 +177,6 @@ def qiskit_callback(number_evaluations, parameters, value, stepsize, accepted):
 def execute(qi: QuantumInterface) -> None:
     optimizer = SPSA(maxiter=100, callback=qiskit_callback, termination_checker=dt)
 
-    m = 2 ** number_of_qubits
-    p0 = np.random.random(m) + 0.2
-    p0 = p0 / np.sum(p0)
-    target_distribution = {k: p0[k] for k in range(m)}
     F = partial(
         objective_function, qi=qi, target_distribution=target_distribution, nshots=2000
     )
@@ -188,10 +188,14 @@ def execute(qi: QuantumInterface) -> None:
     return result
 
 
-def finalize(list_of_measurements: Dict[int, List[Any]]) -> Dict[str, Any]:
+def finalize(list_of_measurements: List[ExecuteCircuitResult]) -> Dict[str, Any]:
     total_counts = {}
-    for m in list_of_measurements:
-        counts = counts_to_distr(m)
+    for measurement_results in list_of_measurements:
+        results = measurement_results
+        if 'results' in measurement_results:  # local and remote return different objects (will fix in next version of sdk!)
+            results = measurement_results['results']
+
+        counts = counts_to_distr(results)
         for k in counts:
             if k in total_counts:
                 total_counts[k] += counts[k]
@@ -199,9 +203,9 @@ def finalize(list_of_measurements: Dict[int, List[Any]]) -> Dict[str, Any]:
                 total_counts[k] = counts[k]
 
     total_counts = {k: total_counts[k]/len(list_of_measurements) for k in total_counts}
-
     return {"avg_decrease": dt.values,
-            "counts": total_counts}
+            "target_distribution": target_distribution,
+            "out_distribution": total_counts}
 
 
 if __name__ == "__main__":
