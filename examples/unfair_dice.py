@@ -103,6 +103,7 @@ class AverageDecreaseTermination:
 
 dt = AverageDecreaseTermination(N=35)
 
+
 def U(circuit_ir, q: Qubit, theta: float, phi: float, lamb: float):
     """McKay decomposition of the U gate.
 
