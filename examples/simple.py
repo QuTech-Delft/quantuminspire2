@@ -2,7 +2,8 @@
 
 import time
 
-from opensquirrel.ir import Qubit, Bit
+from opensquirrel.ir import Bit, Qubit
+
 from quantuminspire.sdk.models.circuit import Circuit
 from quantuminspire.util.api.remote_backend import RemoteBackend
 
