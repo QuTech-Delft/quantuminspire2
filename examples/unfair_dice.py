@@ -17,6 +17,8 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # Part of this code comes from ptetools:
 # https://github.com/eendebakpt/ptetools/tree/main
 
+# This example tries to match a target distribution with a variational quantum cricuit
+
 from functools import partial
 from typing import Any, Dict, List
 
@@ -34,7 +36,7 @@ p0 = p0 / np.sum(p0)
 target_distribution = {k: p0[k] for k in range(m)}
 
 
-def counts_to_distr(counts) -> dict[int, float]:
+def counts_to_distr(counts: Dict[str, int]) -> dict[int, float]:
     """Convert Qiskit result counts to a dictionary.
 
     The dictionary has integers as keys, and pseudo-probabilities as values.
@@ -101,7 +103,6 @@ class AverageDecreaseTermination:
 
 dt = AverageDecreaseTermination(N=35)
 
-
 def U(circuit_ir, q: Qubit, theta: float, phi: float, lamb: float):
     """McKay decomposition of the U gate.
 
@@ -120,7 +121,7 @@ def U(circuit_ir, q: Qubit, theta: float, phi: float, lamb: float):
     return circuit_ir
 
 
-def generate_ansatz(params):
+def generate_ansatz(params: List[Any]):
     with Circuit(platform_name="spin-2", program_name="prgm1", number_of_qubits=2) as circuit:
         U(circuit.ir, Qubit(0), *params[0:3])
         U(circuit.ir, Qubit(1), *params[3:6])
@@ -133,7 +134,7 @@ def generate_ansatz(params):
     return circuit
 
 
-def objective_function(params, qi, target_distribution, nshots=None):
+def objective_function(params: List[Any], qi: QuantumInterface, target_distribution: Dict[int, float], nshots=None):
     """Compares the output distribution of our circuit with parameters `params` to the target distribution."""
     qc = generate_ansatz(params)
     execute_result = qi.execute_circuit(qc.content, nshots)
@@ -145,24 +146,8 @@ def objective_function(params, qi, target_distribution, nshots=None):
     return cost
 
 
-def data_callback(iteration: int, parameters: Any, residual: float) -> None:
-    """Callback used to store data.
-
-    Args:
-        iteration: Iteration on the optimization procedure
-        parameters: Current values of the parameters to be optimized
-        residual: Current residual (value of the objective function)
-    """
-    # do nothing for now
-    pass
-
-
-def qiskit_callback(number_evaluations, parameters, value, stepsize, accepted):
-    data_callback(number_evaluations, parameters, value)
-
-
 def execute(qi: QuantumInterface) -> None:
-    optimizer = SPSA(maxiter=100, callback=qiskit_callback, termination_checker=dt)
+    optimizer = SPSA(maxiter=100, callback=None, termination_checker=dt)
 
     F = partial(objective_function, qi=qi, target_distribution=target_distribution, nshots=2000)
 
@@ -193,7 +178,3 @@ def finalize(list_of_measurements: List[ExecuteCircuitResult]) -> Dict[str, Any]
 
     total_counts = {k: total_counts[k] / len(list_of_measurements) for k in total_counts}
     return {"avg_decrease": dt.values, "target_distribution": target_distribution, "out_distribution": total_counts}
-
-
-if __name__ == "__main__":
-    pass
