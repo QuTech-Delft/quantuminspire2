@@ -29,13 +29,6 @@ from qiskit_algorithms.optimizers import SPSA
 from quantuminspire.sdk.models.circuit import Circuit
 from quantuminspire.util.api.quantum_interface import ExecuteCircuitResult, QuantumInterface
 
-number_of_qubits = 2
-m = 2**number_of_qubits
-p0 = np.random.random(m) + 0.2
-p0 = p0 / np.sum(p0)
-target_distribution = {k: p0[k] for k in range(m)}
-
-
 def counts_to_distr(counts: Dict[str, int]) -> dict[int, float]:
     """Convert Qiskit result counts to a dictionary.
 
@@ -100,7 +93,13 @@ class AverageDecreaseTermination:
                 return True
         return False
 
+# globals
 
+number_of_qubits = 2
+m = 2**number_of_qubits
+p0 = np.random.random(m) + 0.2
+p0 = p0 / np.sum(p0)
+target_distribution = {k: p0[k] for k in range(m)}
 dt = AverageDecreaseTermination(N=35)
 
 
