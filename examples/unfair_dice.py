@@ -29,6 +29,7 @@ from qiskit_algorithms.optimizers import SPSA
 from quantuminspire.sdk.models.circuit import Circuit
 from quantuminspire.util.api.quantum_interface import ExecuteCircuitResult, QuantumInterface
 
+
 def counts_to_distr(counts: Dict[str, int]) -> dict[int, float]:
     """Convert Qiskit result counts to a dictionary.
 
