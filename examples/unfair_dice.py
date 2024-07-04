@@ -94,6 +94,7 @@ class AverageDecreaseTermination:
                 return True
         return False
 
+
 # globals
 
 number_of_qubits = 2
