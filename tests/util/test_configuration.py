@@ -8,7 +8,6 @@ from pytest_mock import MockerFixture
 
 import quantuminspire.util.configuration as configuration
 from tests.conftest import CONFIGURATION
-from compute_api_client.models.page_member import PageMember
 
 EXAMPLE_TOKENINFO = configuration.TokenInfo(
     access_token="secret",
@@ -136,8 +135,12 @@ def test_owner_id(mocked_config_file: MagicMock) -> None:
 def test_get_member_id(
     mocker: MockerFixture, expected_member_id: int, members_list: List[Member], side_effect_user_input: List[Any]
 ) -> None:
+    class PageMember:
+        def __init__(self, items_list):
+            self.items = items_list
+
     members_api = MagicMock()
-    members_api.read_members_members_get = AsyncMock(return_value=PageMember(items=members_list))
+    members_api.read_members_members_get = AsyncMock(return_value=PageMember(members_list))
     mocker.patch("quantuminspire.util.configuration.MembersApi", return_value=members_api)
     mock_input = mocker.patch("builtins.input", side_effect=side_effect_user_input)
     member_id = configuration.Settings.get_team_member_id(host="https://host", access_token="some token")
