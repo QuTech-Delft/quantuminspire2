@@ -136,7 +136,7 @@ def test_get_member_id(
     mocker: MockerFixture, expected_member_id: int, members_list: List[Member], side_effect_user_input: List[Any]
 ) -> None:
     class PageMember:
-        def __init__(self, items_list):
+        def __init__(self, items_list: list[Member]) -> None:
             self.items = items_list
 
     members_api = MagicMock()
