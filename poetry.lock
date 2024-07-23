@@ -1931,4 +1931,4 @@ local = ["qxelarator"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "b066217de627c0b9d6e522899d3cfdaae01a492269245b28d97f29c033e13761"
+content-hash = "e3eb6ec7b4906fa0dd62078d986ba8ad62059c169f1c8c62f16b4a01baa3e82c"
