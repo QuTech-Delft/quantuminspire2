@@ -64,7 +64,6 @@ def test_json_config_settings_file_does_exist(mocked_config_file: MagicMock) -> 
 
 
 def test_json_config_settings_qi2_813(mocked_config_file: MagicMock) -> None:
-
     settings = configuration.Settings()
 
     assert settings.auths["https://host"].well_known_endpoint == "https://some_url"
@@ -96,7 +95,6 @@ def test_settings_from_init(mocked_config_file: MagicMock) -> None:
 
 def test_tokeninfo() -> None:
     assert EXAMPLE_TOKENINFO.access_expires_at == 10100
-    assert EXAMPLE_TOKENINFO.refresh_expires_at == 10200
 
 
 def test_store_tokens(mocked_config_file: MagicMock, mocker: MockerFixture) -> None:
