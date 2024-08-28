@@ -87,7 +87,7 @@ class AuthSettings(BaseModel):
     audience: str = "compute-job-manager"
     # Keycloak requires api-access in scope for compute-job-manager audience
     # Auth0 requires offline_access in scopefor sending a refresh token
-    scope: str = "api-access openid profile offline_access"
+    scope: str = "api-access openid profile email offline_access"
     code_challenge_method: str = "S256"
     code_verifyer_length: int = 64
     well_known_endpoint: Url = (
