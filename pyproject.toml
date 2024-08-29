@@ -22,7 +22,7 @@ qi = "quantuminspire.cli.command_list:app"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-typer = {extras = ["all"], version = "^0.12.3"}
+typer = {extras = ["all"], version = "^0.12.5"}
 pydantic = "^2.8.2"
 qi-compute-api-client = "^0.33.0"
 qxelarator = {version = "^0.7.1", optional = true}
@@ -44,8 +44,8 @@ mypy = "^1.11"
 docformatter = "1.7.5"
 pytest-mock = "^3.14.0"
 black = "^24.8.0"
-pytest-asyncio = "^0.23.8"
-ruff = "^0.5.7"
+pytest-asyncio = "^0.24.0"
+ruff = "^0.6.2"
 types-requests = "^2.25.0"
 types-oauthlib = "^3.2.0.20240806"
 responses = "^0.25.3"
