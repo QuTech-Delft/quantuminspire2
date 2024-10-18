@@ -23,10 +23,10 @@ qi = "quantuminspire.cli.command_list:app"
 [tool.poetry.dependencies]
 python = "^3.9"
 typer = {extras = ["all"], version = "^0.12.5"}
-pydantic = "^2.8.2"
+pydantic = "^2.9.2"
 qi-compute-api-client = "^0.38.0"
 qxelarator = {version = "^0.7.1", optional = true}
-pydantic-settings = "^2.4.0"
+pydantic-settings = "^2.6.0"
 qiskit = "1.0.2"
 oauthlib = "^3.2.2"
 requests = "^2.32.3"
@@ -37,15 +37,15 @@ opensquirrel = {git = "https://github.com/QuTech-Delft/OpenSquirrel.git", rev = 
 local = ["qxelarator"]
 
 [tool.poetry.group.dev.dependencies]
-pytest = {extras = ["toml"], version = "^8.3.2"}
+pytest = {extras = ["toml"], version = "^8.3.3"}
 pytest-cov = "^5.0.0"
-coverage = {extras = ["toml"], version = "^7.6.1"}
-mypy = "^1.11"
+coverage = {extras = ["toml"], version = "^7.6.3"}
+mypy = "^1.12"
 docformatter = "1.7.5"
 pytest-mock = "^3.14.0"
-black = "^24.8.0"
+black = "^24.10.0"
 pytest-asyncio = "^0.24.0"
-ruff = "^0.6.2"
+ruff = "^0.7.0"
 types-requests = "^2.25.0"
 types-oauthlib = "^3.2.0.20240806"
 responses = "^0.25.3"
