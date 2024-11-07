@@ -335,6 +335,20 @@ def login(
     typer.echo(f"Using member ID {settings.auths[host].team_member_id}")
 
 
+@app.command("set-default-host")
+def set_default_host(
+    host: str = typer.Argument(
+        help="The URL of the platform to which to connect"
+    ),
+) -> None:
+    """Set default_host for interacting with Quantum Inspire.
+    """
+    settings = Settings()
+    settings.default_host = Url(host)
+    settings.write_settings_to_file()
+    typer.echo(f"Default host set to {host}")
+
+
 @app.command("logout")
 def logout(
     host: str = typer.Argument(

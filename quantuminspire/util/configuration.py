@@ -162,10 +162,15 @@ class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
         self.auths[host].tokens = tokens
         member_id = self.get_team_member_id(host=host, access_token=tokens.access_token)
         self.auths[host].team_member_id = member_id
+        self.default_host = host
+        self.write_settings_to_file()
+    
+    def write_settings_to_file(self) -> None:
         assert isinstance(self.model_config["json_file"], PathLike)
         Path(self.model_config["json_file"]).write_text(
             self.model_dump_json(indent=2), encoding=self.model_config.get("env_file_encoding")
         )
+
 
     @staticmethod
     async def _fetch_team_member_id(host: str, access_token: str) -> int:
