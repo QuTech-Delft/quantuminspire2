@@ -337,12 +337,9 @@ def login(
 
 @app.command("set-default-host")
 def set_default_host(
-    host: str = typer.Argument(
-        help="The URL of the platform to which to connect"
-    ),
+    host: str = typer.Argument(help="The URL of the platform to which to connect"),
 ) -> None:
-    """Set default_host for interacting with Quantum Inspire.
-    """
+    """Set default_host for interacting with Quantum Inspire."""
     settings = Settings()
     settings.default_host = Url(host)
     settings.write_settings_to_file()
