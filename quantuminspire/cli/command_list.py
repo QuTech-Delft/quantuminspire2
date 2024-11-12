@@ -322,6 +322,7 @@ def login(
     """
     settings = Settings()
     host_url = Url(host)
+    settings.default_host = host_url
 
     auth_session = OauthDeviceSession(settings.auths[host_url])
 

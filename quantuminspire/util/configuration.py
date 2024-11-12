@@ -162,7 +162,6 @@ class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
         self.auths[host].tokens = tokens
         member_id = self.get_team_member_id(host=host, access_token=tokens.access_token)
         self.auths[host].team_member_id = member_id
-        self.default_host = host
         self.write_settings_to_file()
 
     def write_settings_to_file(self) -> None:
