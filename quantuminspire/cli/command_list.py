@@ -311,9 +311,7 @@ def get_final_results(job_id: int = typer.Argument(..., help="The id of the run"
 
 @app.command("login")
 def login(
-    host: Optional[str] = typer.Argument(
-        None, help="The URL of the platform to which to connect"
-    ),
+    host: Optional[str] = typer.Argument(None, help="The URL of the platform to which to connect"),
 ) -> None:
     """Log in to Quantum Inspire.
 
@@ -321,7 +319,8 @@ def login(
     instances. If no host is specified, the production environment will be used.
     """
     settings = Settings()
-    host_url = Url(host or settings.default_host)
+    host = host or settings.default_host
+    host_url = Url(host)
     settings.default_host = host_url
 
     auth_session = OauthDeviceSession(settings.auths[host_url])
