@@ -2,7 +2,8 @@
 
 [![License](https://img.shields.io/github/license/qutech-delft/qiskit-quantuminspire.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
 
-Welcome to the repository for the Quantum Inspire 2 CLI and SDK. The goal of this project to offer basic support for interacting with the Quantum Inspire 2 platform. Currently, functionality of the CLI/SDK is still limited, but the CLI is required for logging in to the QI2 systems if you would like to use (e.g.) the QI2 [Qiskit](https://github.com/QuTech-Delft/qiskit-quantuminspire) or [Pennylane](https://github.com/QuTech-Delft/pennylane-quantuminspire2) plugins.
+Welcome to the repository for the Quantum Inspire 2 CLI and SDK. The goal of this project to offer basic support for interacting with the Quantum Inspire 2 platform.
+Currently, functionality of the CLI/SDK is still limited, but the CLI is required for logging in to the QI2 systems if you would like to use (e.g.) the QI2 [Qiskit](https://github.com/QuTech-Delft/qiskit-quantuminspire) or [Pennylane](https://github.com/QuTech-Delft/pennylane-quantuminspire2) plugins.
 
 ## Installation
 
