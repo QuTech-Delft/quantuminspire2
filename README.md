@@ -23,4 +23,4 @@ In order to login to the platform, run the following command:
 qi login
 ```
 
-This will open a browser window that will allow you to login or create an account. By default this command will login to the production environment, but the command accepts an argument for a different host URL.
+This will open a browser window that will allow you to login or create an account. By default this command will login to the production environment, but the command accepts an argument for a different host URL if needed (e.g. for beta testing purposes).
