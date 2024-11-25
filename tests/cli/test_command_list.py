@@ -6,6 +6,7 @@ from pytest_mock import MockerFixture
 from typer.testing import CliRunner
 
 from quantuminspire.cli.command_list import app
+from quantuminspire.sdk.models.hybrid_algorithm import HybridAlgorithm
 
 runner = CliRunner()
 
@@ -61,6 +62,7 @@ def test_file_upload(mocker: MockerFixture) -> None:
 
     assert result.exit_code == 0
     mock_remote_backend_inst.run.assert_called_once()
+    assert type(mock_remote_backend_inst.run.call_args.args[0]) is HybridAlgorithm
 
 
 def test_file_run(mocker: MockerFixture) -> None:
