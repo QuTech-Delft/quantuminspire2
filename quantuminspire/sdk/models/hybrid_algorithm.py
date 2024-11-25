@@ -14,3 +14,7 @@ class HybridAlgorithm(FileAlgorithm):
     @property
     def content_type(self) -> AlgorithmType:
         return AlgorithmType.HYBRID
+
+    @property
+    def language_name(self) -> str:
+        return "Python"

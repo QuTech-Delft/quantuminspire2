@@ -14,3 +14,7 @@ class CqasmAlgorithm(FileAlgorithm):
     @property
     def content_type(self) -> AlgorithmType:
         return AlgorithmType.QUANTUM
+
+    @property
+    def language_name(self) -> str:
+        return "cQASM"
