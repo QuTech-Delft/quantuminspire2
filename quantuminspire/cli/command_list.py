@@ -242,7 +242,7 @@ def sync_projects(
 def load_algorithm_from_file(file_path: Path) -> Union[HybridAlgorithm, CqasmAlgorithm]:
     """Load an algorithm from a file."""
     if file_path.suffix == ".py":
-        algorithm = HybridAlgorithm("", str(file_path))
+        algorithm: Union[HybridAlgorithm, CqasmAlgorithm] = HybridAlgorithm("", str(file_path))
     elif file_path.suffix == ".cq":
         algorithm = CqasmAlgorithm("", str(file_path))
     else:
