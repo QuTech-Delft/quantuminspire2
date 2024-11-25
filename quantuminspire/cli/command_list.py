@@ -3,12 +3,13 @@
 import webbrowser
 from enum import Enum
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
 import typer
 from typer import Typer
 
 from quantuminspire.sdk.models.cqasm_algorithm import CqasmAlgorithm
+from quantuminspire.sdk.models.file_algorithm import FileAlgorithm
 from quantuminspire.sdk.models.hybrid_algorithm import HybridAlgorithm
 from quantuminspire.util.api.local_backend import LocalBackend
 from quantuminspire.util.api.remote_backend import RemoteBackend
@@ -239,10 +240,10 @@ def sync_projects(
     typer.echo(f"Sync projects with {dest.value}")
 
 
-def load_algorithm_from_file(file_path: Path) -> Union[HybridAlgorithm, CqasmAlgorithm]:
+def load_algorithm_from_file(file_path: Path) -> FileAlgorithm:
     """Load an algorithm from a file."""
     if file_path.suffix == ".py":
-        algorithm: Union[HybridAlgorithm, CqasmAlgorithm] = HybridAlgorithm("", str(file_path))
+        algorithm: FileAlgorithm = HybridAlgorithm("", str(file_path))
     elif file_path.suffix == ".cq":
         algorithm = CqasmAlgorithm("", str(file_path))
     else:
