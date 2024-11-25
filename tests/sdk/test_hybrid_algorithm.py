@@ -39,3 +39,8 @@ def test_read_algorithm(mock_file: MagicMock) -> None:
     p = HybridAlgorithm(platform_name="platform", program_name="program")
     p.read_file(mock_file)
     assert p.content == MOCK_HYBRID_ALGORITHM
+
+
+def test_get_language_name() -> None:
+    p = HybridAlgorithm(platform_name="platform", program_name="program")
+    assert p.language_name == "Python"

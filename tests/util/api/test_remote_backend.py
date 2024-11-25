@@ -39,6 +39,8 @@ def compute_api_client(mocker: MockerFixture) -> None:
     mocker.patch("quantuminspire.util.api.remote_backend.ResultsApi", return_value=AsyncMock())
     mocker.patch("quantuminspire.util.api.remote_backend.FinalResult", return_value=MagicMock())
     mocker.patch("quantuminspire.util.api.remote_backend.FinalResultsApi", return_value=AsyncMock())
+    mocker.patch("quantuminspire.util.api.remote_backend.Language", return_value=AsyncMock())
+    mocker.patch("quantuminspire.util.api.remote_backend.LanguagesApi", return_value=AsyncMock())
 
 
 @pytest.fixture
@@ -70,8 +72,13 @@ def test_create(configuration: MagicMock, mocked_settings: MagicMock, mocked_aut
 
 
 def test_run(
-    api_client: MagicMock, compute_api_client: None, mocked_settings: MagicMock, mocked_authentication: MagicMock
+    api_client: MagicMock,
+    compute_api_client: None,
+    mocked_settings: MagicMock,
+    mocked_authentication: MagicMock,
+    mocker: MockerFixture,
 ) -> None:
+    mocker.patch.object(RemoteBackend, "_get_language_for_algorithm", return_value=AsyncMock())
     backend = RemoteBackend()
     backend.run(MagicMock(), 10)
     api_client.assert_has_calls([call().__aenter__(), call().__aexit__(None, None, None)])
