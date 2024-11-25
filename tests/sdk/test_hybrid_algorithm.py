@@ -1,7 +1,7 @@
+from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
-from pytest_mock import MockerFixture
 
 from quantuminspire.sdk.models.hybrid_algorithm import HybridAlgorithm
 
@@ -9,8 +9,8 @@ MOCK_HYBRID_ALGORITHM = "hybrid algorithm"
 
 
 @pytest.fixture
-def mock_file(mocker: MockerFixture) -> MagicMock:
-    open_mock = mocker.patch("quantuminspire.sdk.models.hybrid_algorithm.Path")
+def mock_file() -> MagicMock:
+    open_mock = MagicMock(auto_spec=Path)
     open_mock.read_text.return_value = MOCK_HYBRID_ALGORITHM
     return open_mock
 
