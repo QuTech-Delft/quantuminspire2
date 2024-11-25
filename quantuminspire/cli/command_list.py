@@ -259,16 +259,18 @@ def upload_files(
     backend_type_id: int = typer.Argument(
         ..., help="The id of the backend type on which this algorithm should be executed"
     ),
+    num_shots: int = typer.Option(
+        1024, help="The number of shots to run the algorithm (only for pure cQASM algorithms)"
+    ),
 ) -> None:
     """Upload a file to the QI API.
 
-    Upload a Hybrid Quantum/Classical Algorithm to the Quantum Inspire API. This file is marked as a hybrid algorithm
-    when sent to the API.
+    Upload a file containing either a Hybrid (.py) or a Quantum (.cq) algorithm, and run it on the QI2 platform.
     """
     backend = RemoteBackend()
     program = load_algorithm_from_file(Path(name))
     program.read_file(Path(name))
-    job_id = backend.run(program, backend_type_id=backend_type_id)
+    job_id = backend.run(program, backend_type_id=backend_type_id, number_of_shots=num_shots)
     typer.echo(f"Upload file with name: {name}")
     typer.echo(f"job_id {job_id}")
 
