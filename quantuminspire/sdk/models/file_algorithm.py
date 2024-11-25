@@ -10,7 +10,7 @@ from quantuminspire.sdk.models.base_algorithm import BaseAlgorithm
 class FileAlgorithm(BaseAlgorithm):
     """A container object, reading the python algorithm and keeping metadata.
 
-    The HybridAlgorithm reads the python file describing the algorithm and stores it in `.content`.
+    The FileAlgorithm reads the python file describing the algorithm and stores it in `.content`.
     """
 
     def __init__(self, platform_name: str, program_name: str) -> None:
