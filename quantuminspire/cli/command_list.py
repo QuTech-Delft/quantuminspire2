@@ -3,11 +3,12 @@
 import webbrowser
 from enum import Enum
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import typer
 from typer import Typer
 
+from quantuminspire.sdk.models.cqasm_algorithm import CqasmAlgorithm
 from quantuminspire.sdk.models.hybrid_algorithm import HybridAlgorithm
 from quantuminspire.util.api.local_backend import LocalBackend
 from quantuminspire.util.api.remote_backend import RemoteBackend
@@ -238,6 +239,19 @@ def sync_projects(
     typer.echo(f"Sync projects with {dest.value}")
 
 
+def load_algorithm_from_file(file_path: Path) -> Union[HybridAlgorithm, CqasmAlgorithm]:
+    """Load an algorithm from a file."""
+    if file_path.suffix == ".py":
+        algorithm = HybridAlgorithm("", str(file_path))
+    elif file_path.suffix == ".cq":
+        algorithm = CqasmAlgorithm("", str(file_path))
+    else:
+        raise ValueError(f"Unsupported file type: {file_path.suffix}. Supported types are .py and .cq")
+
+    algorithm.read_file(file_path)
+    return algorithm
+
+
 @files_app.command("upload")
 def upload_files(
     name: str = typer.Argument(..., help="The name of the file to upload"),
@@ -251,7 +265,7 @@ def upload_files(
     when sent to the API.
     """
     backend = RemoteBackend()
-    program = HybridAlgorithm(platform_name="spin-2", program_name=name)
+    program = load_algorithm_from_file(Path(name))
     program.read_file(Path(name))
     job_id = backend.run(program, backend_type_id=backend_type_id)
     typer.echo(f"Upload file with name: {name}")
