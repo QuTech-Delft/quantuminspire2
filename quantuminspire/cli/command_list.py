@@ -263,7 +263,7 @@ def upload_files(
     num_shots: int = typer.Option(
         1024, help="The number of shots to run the algorithm (only for pure cQASM algorithms)"
     ),
-    shot_memory_enabled: bool = typer.Option(
+    store_shot_memory: bool = typer.Option(
         False, help="Whether to enable shot memory for the algorithm (only for pure cQASM algorithms)"
     ),
 ) -> None:
@@ -274,7 +274,7 @@ def upload_files(
     backend = RemoteBackend()
     program = load_algorithm_from_file(Path(name))
     program.read_file(Path(name))
-    job_options = JobOptions(number_of_shots=num_shots, shot_memory_enabled=shot_memory_enabled)
+    job_options = JobOptions(number_of_shots=num_shots, shot_memory_enabled=store_shot_memory)
     job_id = backend.run(program, backend_type_id=backend_type_id, options=job_options)
     typer.echo(f"Upload file with name: {name}")
     typer.echo(f"job_id {job_id}")
