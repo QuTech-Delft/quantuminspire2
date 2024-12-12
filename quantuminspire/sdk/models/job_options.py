@@ -10,6 +10,6 @@ class JobOptions(BaseModel):
     number_of_shots: int = Field(
         1024, ge=1, description="Number of shots for the job (only pure cQASM algorithms supported)."
     )
-    shot_memory_enabled: bool = Field(
+    raw_data_enabled: bool = Field(
         False, description="Whether to enable shot memory for the job (only pure cQASM algorithms supported)."
     )
