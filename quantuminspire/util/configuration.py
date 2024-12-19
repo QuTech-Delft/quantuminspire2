@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Tuple, Type, cast
 
 import typer
-from compute_api_client import ApiClient, Configuration, MembersApi
+from compute_api_client import ApiClient, AuthConfigApi, Configuration, MembersApi
 from pydantic import BaseModel, BeforeValidator, HttpUrl
 from pydantic.fields import Field, FieldInfo
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
@@ -141,6 +141,18 @@ class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
             JsonConfigSettingsSource(settings_cls),
             file_secret_settings,
         )
+
+    async def fetch_suggested_auth_settings(self, host: Optional[Url] = None) -> None:
+        """Fetch suggested auth settings for the default host."""
+        if host is None:
+            host = self.default_host
+        async with ApiClient(Configuration(host=host)) as api_client:
+            auth_config = await AuthConfigApi(api_client).auth_config_auth_config_get()
+            self.auths[self.default_host] = AuthSettings(
+                client_id=auth_config.client_id,
+                audience=auth_config.audience,
+                well_known_endpoint=auth_config.well_known_endpoint,
+            )
 
     def store_tokens(self, host: Url, tokens: TokenInfo) -> None:
         """
