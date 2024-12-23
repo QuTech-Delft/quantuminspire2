@@ -108,6 +108,7 @@ def test_results_get(mocker: MockerFixture) -> None:
     assert result.exit_code == 0
     mock_remote_backend_inst.get_results.assert_called_once()
 
+
 def test_results_get_no_results(mocker: MockerFixture) -> None:
     mock_remote_backend_inst = MagicMock()
     mock_remote_backend_inst.get_results.return_value = None
@@ -140,10 +141,7 @@ def test_final_results_get_no_results(mocker: MockerFixture) -> None:
     mock_remote_backend_inst.get_final_results.assert_called_once()
 
 
-@pytest.mark.parametrize("use_local_auth_config", [
-    True,
-    False
-])
+@pytest.mark.parametrize("use_local_auth_config", [True, False])
 def test_login(mocker: MockerFixture, mocked_config_file: MagicMock, use_local_auth_config: bool) -> None:
     device_session = mocker.patch("quantuminspire.cli.command_list.OauthDeviceSession")()
     webbrowser_open = mocker.patch("quantuminspire.cli.command_list.webbrowser.open")

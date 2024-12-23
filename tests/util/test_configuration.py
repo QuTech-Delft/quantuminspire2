@@ -25,9 +25,7 @@ def test_force_file_into_existence_file_does_not_exist(mocked_config_file: Magic
     configuration.ensure_config_file_exists(mocked_config_file, "utf-8")
     mocked_config_file.parent.mkdir.assert_called_once_with(parents=True, exist_ok=True)
     mocked_config_file.open.assert_called_once_with("w", encoding="utf-8")
-    open_mock.write.assert_called_once_with(
-        configuration.DEFAULT_CONFIG
-    )
+    open_mock.write.assert_called_once_with(configuration.DEFAULT_CONFIG)
 
 
 def test_force_file_into_existence_file_exists() -> None:
@@ -134,12 +132,10 @@ def test_get_member_id(
     assert member_id == expected_member_id
     assert mock_input.call_count == len(side_effect_user_input)
 
+
 @pytest.mark.parametrize(
     "host",
-    [
-        "https://test.host",
-        None
-    ],
+    ["https://test.host", None],
 )
 async def test_fetch_suggested_auth_settings(mocked_config_file: MagicMock, mocker: MockerFixture, host: str) -> None:
     settings = configuration.Settings()
