@@ -180,13 +180,12 @@ async def test_wait_until_token_becomes_valid() -> None:
 
     secret_key = "some_secret_key"
 
-    # Current time + 1 second
     current_time = int(time.time())
     valid_from_time = current_time + 1  # Token becomes valid in 1 second
 
     # Payload with 'iat' and 'exp' claims
     payload = {
-        "sub": "user_id_123",  # Example subject
+        "sub": "user_id_123",
         "iat": valid_from_time,  # Issued at time (valid after 1 second)
         "exp": valid_from_time + 3600,  # Expires 1 hour from valid time
     }

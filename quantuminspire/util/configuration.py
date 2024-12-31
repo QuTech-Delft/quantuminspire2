@@ -201,9 +201,7 @@ class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
 
     @classmethod
     async def _validate_token_and_retrieve_team_member_id(cls, host: str, access_token: str) -> int:
-        # First, wait until the token is valid
         await cls._wait_until_token_becomes_valid(access_token)
-        # Then fetch the team member ID
         return await cls._fetch_team_member_id(host, access_token)
 
     @staticmethod
