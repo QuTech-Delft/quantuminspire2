@@ -335,7 +335,7 @@ def get_final_results(job_id: int = typer.Argument(..., help="The id of the run"
 @app.command("login")
 def login(
     host: Optional[str] = typer.Argument(None, help="The URL of the platform to which to connect"),
-    use_local_auth_config: bool = typer.Option(
+    override_auth_config: bool = typer.Option(
         False,
         help="Will ignore authentication configuration suggested by the API and use stored configuration instead",
     ),
@@ -350,8 +350,8 @@ def login(
     host_url = Url(host)
     settings.default_host = host_url
 
-    if not use_local_auth_config:
-        asyncio.run(settings.fetch_suggested_auth_settings(host_url))
+    if not override_auth_config:
+        asyncio.run(settings.fetch_auth_settings(host_url))
 
     auth_session = OauthDeviceSession(settings.auths[host_url])
 

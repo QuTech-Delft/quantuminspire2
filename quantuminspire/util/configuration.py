@@ -18,12 +18,6 @@ from typing_extensions import Annotated
 
 Url = Annotated[str, BeforeValidator(lambda value: str(HttpUrl(value)).rstrip("/"))]
 
-DEFAULT_CONFIG = """
-{
-  "auths": {}
-}
-"""
-
 
 def ensure_config_file_exists(file_path: Path, file_encoding: Optional[str] = None) -> None:
     """Create the file if it does not exist.
@@ -34,7 +28,7 @@ def ensure_config_file_exists(file_path: Path, file_encoding: Optional[str] = No
     """
     if not file_path.exists():
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        file_path.open("w", encoding=file_encoding).write(DEFAULT_CONFIG)
+        file_path.open("w", encoding=file_encoding).close()
 
 
 class JsonConfigSettingsSource(PydanticBaseSettingsSource):
@@ -142,7 +136,7 @@ class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
             file_secret_settings,
         )
 
-    async def fetch_suggested_auth_settings(self, host: Optional[Url] = None) -> None:
+    async def fetch_auth_settings(self, host: Optional[Url] = None) -> None:
         """Fetch suggested auth settings for the default host."""
         if host is None:
             host = self.default_host
