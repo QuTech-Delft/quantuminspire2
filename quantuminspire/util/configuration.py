@@ -172,7 +172,7 @@ class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
     async def _fetch_team_member_id(host: str, access_token: str) -> int:
         config = Configuration(host=host, access_token=access_token)
         # Wait for sometime as we might get token not yet valid error due to clock sync problem between servers
-        await asyncio.sleep(3)  
+        await asyncio.sleep(3)
         async with ApiClient(config) as api_client:
             api_instance = MembersApi(api_client)
             members_page = await api_instance.read_members_members_get()
