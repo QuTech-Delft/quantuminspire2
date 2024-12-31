@@ -141,7 +141,7 @@ def test_final_results_get_no_results(mocker: MockerFixture) -> None:
     mock_remote_backend_inst.get_final_results.assert_called_once()
 
 
-def test_fetch_auth_settings(mocker: MockerFixture, mocked_config_file: MagicMock) -> None:
+def test_override_auth_config(mocker: MockerFixture, mocked_config_file: MagicMock) -> None:
     fetch_auth = mocker.patch("quantuminspire.cli.command_list.Settings.fetch_auth_settings")
     runner.invoke(app, ["login", "https://host", "--override-auth-config"])
     fetch_auth.assert_not_called()
