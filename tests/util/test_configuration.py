@@ -27,6 +27,7 @@ def test_force_file_into_existence_file_does_not_exist(mocked_config_file: Magic
     mocked_config_file.open.assert_called_once_with("w", encoding="utf-8")
     open_mock.close.assert_called_once()
 
+
 def test_force_file_into_existence_file_exists() -> None:
     path = MagicMock()
     path.exists.return_value = True
