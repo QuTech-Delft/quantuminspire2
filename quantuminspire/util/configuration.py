@@ -211,12 +211,8 @@ class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
 
         while True:
             current_time = int(time.time())
-            time_diff = current_time - token_issued_at
+            time_diff = token_issued_at - current_time
 
             if time_diff > 0:
-                return
-            
-            await asyncio.sleep(abs(time_diff))
-
-            
-
+                await asyncio.sleep(time_diff)
+            return
