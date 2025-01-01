@@ -210,6 +210,13 @@ class Settings(BaseSettings):  # pylint: disable=too-few-public-methods
         token_issued_at = int(decoded_token["iat"])
 
         while True:
-            await asyncio.sleep(1)
-            if int(time.time()) > token_issued_at:
+            current_time = int(time.time())
+            time_diff = current_time - token_issued_at
+
+            if time_diff > 0:
                 return
+            
+            await asyncio.sleep(abs(time_diff))
+
+            
+
